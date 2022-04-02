@@ -39,7 +39,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
             >
               <a className="flex-shrink-0" href={track.spotify_url}>
                 <img
-                  className="w-32 sm:w-full object-cover rounded-sm"
+                  className="transition-all duration-300 hover:scale-105 w-32 sm:w-full object-cover rounded-sm shadow-xl hover:shadow-2xl dark:shadow-none"
                   alt={`Album cover art for ${track.artist}'s ${track.album}.`}
                   src={track.image_url}
                   loading={index <= 6 ? "eager" : "lazy"}
