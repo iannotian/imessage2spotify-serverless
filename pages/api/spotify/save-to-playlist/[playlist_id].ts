@@ -10,9 +10,15 @@ export default async function handler(
   const { token_type, access_token, uris } = req.body;
   const { playlist_id } = req.query;
 
-  if (!token_type || !access_token || !Array.isArray(uris) || !playlist_id) {
+  if (
+    !token_type ||
+    !access_token ||
+    !Array.isArray(uris) ||
+    uris.length > 1 ||
+    !playlist_id
+  ) {
     res.status(400).json({
-      message: `Missing token_type (${token_type}), access_token (${access_token}), uris (${uris}), or playlist_id (${playlist_id})`,
+      message: `Missing token_type (${token_type}), access_token (${access_token}), uris (${uris}), or playlist_id (${playlist_id}). Or uris is longer than 1.`,
     });
     return;
   }
