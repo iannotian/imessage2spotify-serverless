@@ -1,6 +1,5 @@
 import got, { OptionsOfJSONResponseBody } from "got";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { SPOTIFY_CLIENT_SECRET_BASE64 } from "../../../lib/constants";
 
 export default async function handler(
   req: NextApiRequest,

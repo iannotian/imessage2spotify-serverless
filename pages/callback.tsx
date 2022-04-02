@@ -2,7 +2,6 @@ import got, { OptionsOfJSONResponseBody } from "got";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { SPOTIFY_CLIENT_SECRET_BASE64 } from "../lib/constants";
 
 const Callback = ({
   data,
