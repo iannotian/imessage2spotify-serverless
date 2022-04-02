@@ -67,6 +67,6 @@ export default async function handler(
       );
     }
   } catch (error: any) {
-    res.status(400).json({ error });
+    res.status(400).json({ spotifyResponseBody: error.response.body });
   }
 }

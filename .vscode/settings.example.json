@@ -1,0 +1,13 @@
+{
+  "rest-client.environmentVariables": {
+    "$shared": {},
+    "local": {
+      "host": "localhost",
+      "spotifyAccessToken": "insert-token-here"
+    },
+    "production": {
+      "host": "imessage2spotify.vercel.app",
+      "spotifyAccessToken": "insert-token-here"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+@playlist_id = 'id'
+@spotify_track_uri = 'uri'
+
+POST http://localhost:3000/api/spotify/save/{{playlist_id}}
+Content-Type: application/json
+
+{
+  "token_type": "Bearer",
+  "access_token": "{{spotifyAccessToken}}",
+  "uris": ["{{spotify_track_uri}}"]
+}
