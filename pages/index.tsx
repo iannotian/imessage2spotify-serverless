@@ -22,7 +22,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
           </a>
         </h1>
         <ul className="track-list">
-          {tracks.map((track) => (
+          {tracks.map((track, index) => (
             <li key={track.spotify_track_id} className="track-list-item">
               <a href={track.spotify_url}>
                 <div className="track-image">
@@ -31,6 +31,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
                     src={track.image_url}
                     height={"256px"}
                     width={"256px"}
+                    priority={index <= 6}
                   />
                 </div>
               </a>

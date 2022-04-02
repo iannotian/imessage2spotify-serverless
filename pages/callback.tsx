@@ -1,9 +1,18 @@
 import got, { OptionsOfJSONResponseBody } from "got";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { SPOTIFY_CLIENT_SECRET_BASE64 } from "../lib/constants";
 
-const Callback = ({ data, message }: { data: any; message: string }) => {
+const Callback = ({
+  data,
+  message,
+  error,
+}: {
+  data: any;
+  message: string;
+  error: any;
+}) => {
   return (
     <div>
       <Head>
@@ -22,6 +31,11 @@ const Callback = ({ data, message }: { data: any; message: string }) => {
             value={JSON.stringify(data)}
           ></textarea>
         )}
+        {error && (
+          <Link href="/api/spotify/authorize" passHref>
+            <a className="text-blue-600 underline">Try again?</a>
+          </Link>
+        )}
       </main>
     </div>
   );
@@ -36,6 +50,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         data: null,
         message:
           "Unsuccessful authorization. Please log out of Spotify in Safari and try again.",
+        error: error ? error : "Missing code from Spotify.",
       },
     };
   }
@@ -62,11 +77,17 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         message: `✅ Authorization successful! Your authorization tokens are below.
       Select and copy your token data, then press Done to continue
       iMessage2Spotify setup.`,
+        error: null,
       },
     };
   } catch (error: any) {
     return {
-      props: { message: JSON.stringify(error.response.body), data: null },
+      props: {
+        message:
+          "An error occurred while requesting an access token via Spotify.",
+        data: null,
+        error: error.response.body,
+      },
     };
   }
 };
