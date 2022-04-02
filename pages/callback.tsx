@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       props: {
         data: null,
         message:
-          "Unsuccessful. Please log out of Spotify in Safari and try again.",
+          "Unsuccessful authorization. Please log out of Spotify in Safari and try again.",
       },
     };
   }
@@ -45,25 +45,30 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     url: "https://accounts.spotify.com/api/token",
     form: {
       grant_type: "authorization_code",
-      redirect_uri: process.env.SPOTIFY_CALLBACK_URI,
+      redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
       code,
-    },
-    headers: {
-      Authorization: `Basic ${SPOTIFY_CLIENT_SECRET_BASE64}`,
+      client_id: process.env.SPOTIFY_CLIENT_ID,
+      client_secret: process.env.SPOTIFY_CLIENT_SECRET,
     },
     responseType: "json",
   };
 
-  const data = await got(reqConfig).json();
+  try {
+    const data = await got(reqConfig).json();
 
-  return {
-    props: {
-      data,
-      message: `✅ Authorization successful! Your authorization tokens are below.
-    Select and copy your token data, then press Done to continue
-    iMessage2Spotify setup.`,
-    },
-  };
+    return {
+      props: {
+        data,
+        message: `✅ Authorization successful! Your authorization tokens are below.
+      Select and copy your token data, then press Done to continue
+      iMessage2Spotify setup.`,
+      },
+    };
+  } catch (error: any) {
+    return {
+      props: { message: JSON.stringify(error.response.body), data: null },
+    };
+  }
 };
 
 export default Callback;

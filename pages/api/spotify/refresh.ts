@@ -18,9 +18,8 @@ export default async function handler(
     form: {
       grant_type: "refresh_token",
       refresh_token: token,
-    },
-    headers: {
-      Authorization: `Basic ${SPOTIFY_CLIENT_SECRET_BASE64}`,
+      client_id: process.env.SPOTIFY_CLIENT_ID,
+      client_secret: process.env.SPOTIFY_CLIENT_SECRET,
     },
     responseType: "json",
   };
