@@ -28,8 +28,6 @@ export function formatTimeAgo(dateString: string, locale?: string): string {
     }
   }
 
-  console.log({ timeDelta, lastUnit, locale });
-
   const formatter = new Intl.RelativeTimeFormat(locale);
   return formatter.format(Math.round(timeDelta), lastUnit);
 }

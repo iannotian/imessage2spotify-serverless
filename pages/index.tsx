@@ -69,8 +69,6 @@ export async function getServerSideProps() {
   if (process.env.NODE_ENV === "production") {
     const cachedTracks = await redis.get<any>("tracks");
 
-    console.log({ cachedTracks });
-
     if (cachedTracks) {
       return {
         props: { tracks: cachedTracks },
