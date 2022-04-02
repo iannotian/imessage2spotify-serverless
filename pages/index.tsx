@@ -20,7 +20,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
       <main className="space-y-4">
         <div>
           <h1 className="font-bold text-gray-600 dark:text-gray-400">
-            IMESSAGE2SPOTIFY – LATEST SHARED TRACKS &nbsp;
+            iMessage2Spotify - Latest Shared Tracks
           </h1>
           <a
             className=""
@@ -32,7 +32,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
           </a>
         </div>
         <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 md:sm:grid md:grid-cols-4 xl:grid-cols-6 gap-x-4 gap-y-4">
-          {tracks.reverse().map((track, index) => (
+          {tracks.map((track, index) => (
             <li
               key={track.spotify_track_id}
               className="flex sm:block space-x-4 sm:space-x-0 sm:space-y-2"
@@ -70,7 +70,7 @@ export async function getServerSideProps() {
 
     if (cachedTracks) {
       return {
-        props: { tracks: cachedTracks },
+        props: { tracks: cachedTracks.reverse() },
       };
     }
   }
@@ -78,7 +78,7 @@ export async function getServerSideProps() {
   const faunaTracks = await getAllTracks();
   const tracks = faunaTracks.data.map((track: any) => track.data);
 
-  return { props: { tracks } };
+  return { props: { tracks: tracks.reverse() } };
 }
 
 export default Home;
