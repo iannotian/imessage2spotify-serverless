@@ -19,23 +19,28 @@ const Home = ({ tracks }: { tracks: any[] }) => {
 
       <main className="space-y-4">
         <div>
-          <h1 className="font-bold text-gray-600 dark:text-gray-400">
-            iMessage2Spotify - Latest Shared Tracks
+          <h1 className="text-gray-600 dark:text-gray-400">
+            <span className="block">
+              iMessage2Spotify - Get the iOS Shortcut on{" "}
+              <a
+                className="font-bold text-blue-500"
+                href="https://routinehub.co/shortcut/7741/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                RoutineHub
+              </a>
+            </span>
+            <span className="block uppercase text-2xl font-bold">
+              Latest Shared Tracks
+            </span>
           </h1>
-          <a
-            className=""
-            href="https://routinehub.co/shortcut/7741/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Get the iOS Shortcut on RoutineHub
-          </a>
         </div>
         <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 md:sm:grid md:grid-cols-4 xl:grid-cols-6 gap-x-4 gap-y-4">
           {tracks.map((track, index) => (
             <li
               key={track.spotify_track_id}
-              className="flex sm:block space-x-4 sm:space-x-0 sm:space-y-2"
+              className="flex sm:block space-x-4 sm:space-x-0 sm:space-y-4"
             >
               <a className="flex-shrink-0" href={track.spotify_url}>
                 <img
@@ -45,16 +50,16 @@ const Home = ({ tracks }: { tracks: any[] }) => {
                   loading={index <= 6 ? "eager" : "lazy"}
                 />
               </a>
-              <div className="">
+              <div className="space-y-2">
                 <HotBadge count={track.occurrences}></HotBadge>
-                <p className="text-md">{track.title}</p>
-                <p className="font-bold tracking-wide text-sm">
-                  {track.artist}
-                </p>
-                <p className="italic text-sm">{track.album}</p>
-                <time dateTime={track.updated_at} className="text-gray-400">
-                  {formatTimeAgo(track.updated_at)}
-                </time>
+                <div>
+                  <p className="">{track.title}</p>
+                  <p className="font-bold tracking-wide">{track.artist}</p>
+                  <p className="italic">{track.album}</p>
+                  <time dateTime={track.updated_at} className="text-gray-400">
+                    {formatTimeAgo(track.updated_at)}
+                  </time>
+                </div>
               </div>
             </li>
           ))}
