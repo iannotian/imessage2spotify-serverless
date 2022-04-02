@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
+import { HotBadge } from "../components/HotBadge";
 import { getAllTracks } from "../lib/fauna";
 import { redis } from "../lib/redis";
 import { formatTimeAgo } from "../lib/util";
@@ -30,7 +31,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
             Get the iOS Shortcut on RoutineHub
           </a>
         </div>
-        <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-4 xl:grid-cols-6 gap-x-4 gap-y-4">
+        <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 md:sm:grid md:grid-cols-4 xl:grid-cols-6 gap-x-4 gap-y-4">
           {tracks.reverse().map((track, index) => (
             <li
               key={track.spotify_track_id}
@@ -45,10 +46,8 @@ const Home = ({ tracks }: { tracks: any[] }) => {
                 />
               </a>
               <div className="">
-                <p className="text-md">
-                  {track.title}
-                  {/* <span className="">{track.occurrences}</span> */}
-                </p>
+                <HotBadge count={track.occurrences}></HotBadge>
+                <p className="text-md">{track.title}</p>
                 <p className="font-bold tracking-wide text-sm">
                   {track.artist}
                 </p>
