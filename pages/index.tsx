@@ -31,7 +31,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
           </a>
         </div>
         <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-4 xl:grid-cols-6 gap-x-4 gap-y-4">
-          {tracks.map((track, index) => (
+          {tracks.reverse().map((track, index) => (
             <li
               key={track.spotify_track_id}
               className="flex sm:block space-x-4 sm:space-x-0 sm:space-y-2"
