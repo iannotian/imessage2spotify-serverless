@@ -1,6 +1,6 @@
 import got, { OptionsOfJSONResponseBody } from "got";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getTrackById, saveTrack } from "../../../../lib/fauna";
+import { FaunaTrack, getTrackById, saveTrack } from "../../../../lib/fauna";
 import { SpotifyTrack } from "../../../../lib/types";
 
 export default async function handler(
@@ -62,17 +62,9 @@ export default async function handler(
         responseType: "json",
       }).json<SpotifyTrack>();
 
-      await saveTrack({
-        spotify_track_id: spotifyTrackResponse?.id,
-        spotify_url: spotifyTrackResponse?.uri,
-        album: spotifyTrackResponse?.album?.name,
-        artist: spotifyTrackResponse?.artists
-          ?.map((artist) => artist?.name)
-          .join(", "),
-        image_url: spotifyTrackResponse?.album?.images?.[0].url,
-        occurrences: 1,
-        title: spotifyTrackResponse?.name,
-      });
+      await saveTrack(
+        FaunaTrack.translateFromSpotifyTrack(spotifyTrackResponse)
+      );
     }
   } catch (error: any) {
     res.status(400).json({ error });

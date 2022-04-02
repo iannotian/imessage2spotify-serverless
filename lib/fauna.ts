@@ -1,4 +1,5 @@
 import faunadb, { query as q } from "faunadb";
+import { SpotifyTrack } from "./types";
 
 enum FaunaIndex {
   SPOTIFY_TRACK_ID = "spotify_track_id_index",
@@ -8,15 +9,27 @@ enum FaunaCollection {
   TRACKS = "tracks",
 }
 
-export interface FaunaTrack {
+export abstract class FaunaTrack {
+  static translateFromSpotifyTrack(spotifyTrack: SpotifyTrack): FaunaTrack {
+    return {
+      spotify_track_id: spotifyTrack?.id,
+      spotify_url: spotifyTrack?.uri,
+      album: spotifyTrack?.album?.name,
+      artist: spotifyTrack?.artists?.map((artist) => artist?.name).join(", "),
+      image_url: spotifyTrack?.album?.images?.[0].url,
+      occurrences: 1,
+      title: spotifyTrack?.name,
+    };
+  }
+
   id?: number;
-  spotify_track_id: string;
-  spotify_url: string;
-  title: string;
-  artist: string;
-  album: string;
-  image_url: string;
-  occurrences: number;
+  spotify_track_id!: string;
+  spotify_url!: string;
+  title!: string;
+  artist!: string;
+  album!: string;
+  image_url!: string;
+  occurrences!: number;
   created_at?: Date;
   updated_at?: Date;
 }
