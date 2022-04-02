@@ -1,4 +1,3 @@
-import { Redis } from "@upstash/redis";
 import got, { OptionsOfJSONResponseBody } from "got";
 import type { NextApiRequest, NextApiResponse } from "next";
 import {

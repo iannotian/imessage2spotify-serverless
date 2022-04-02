@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
 import { getAllTracks } from "../lib/fauna";
-import { Redis } from "@upstash/redis";
 import { redis } from "../lib/redis";
 
 const Home = ({ tracks }: { tracks: any[] }) => {
