@@ -1,6 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
 import { getAllTracks } from "../lib/fauna";
+import { Redis } from "@upstash/redis";
+import { redis } from "../lib/redis";
 
 const Home = ({ tracks }: { tracks: any[] }) => {
   return (
@@ -58,9 +60,20 @@ const Home = ({ tracks }: { tracks: any[] }) => {
 };
 
 export async function getServerSideProps() {
-  const tracks = await getAllTracks();
+  if (process.env.NODE_ENV === "production") {
+    const cachedTracks = await redis.get<any>("tracks");
 
-  return { props: { tracks: tracks.data.map((track: any) => track.data) } };
+    if (cachedTracks) {
+      return {
+        props: { tracks: cachedTracks },
+      };
+    }
+  }
+
+  const faunaTracks = await getAllTracks();
+  const tracks = faunaTracks.data.map((track: any) => track.data);
+
+  return { props: { tracks } };
 }
 
 export default Home;
