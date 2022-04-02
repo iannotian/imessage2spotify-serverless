@@ -1,4 +1,4 @@
-export function formatTimeAgo(date: Date, locale?: string): string {
+export function formatTimeAgo(dateString: string, locale?: string): string {
   const unitToMsMap: { [key: string]: number } = {
     year: 1000 * 3600 * 24 * 365,
     month: 1000 * 3600 * 24 * 30,
@@ -8,6 +8,8 @@ export function formatTimeAgo(date: Date, locale?: string): string {
     minute: 1000 * 60,
     second: 1000,
   };
+
+  const date = new Date(dateString);
 
   let remainingMs = date.getTime() - Date.now();
   let timeDelta = 0;

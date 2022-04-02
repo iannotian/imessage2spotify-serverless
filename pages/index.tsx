@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { getAllTracks } from "../lib/fauna";
 import { redis } from "../lib/redis";
+import { formatTimeAgo } from "../lib/util";
 
 const Home = ({ tracks }: { tracks: any[] }) => {
   return (
@@ -15,39 +16,45 @@ const Home = ({ tracks }: { tracks: any[] }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1>
-          IMESSAGE2SPOTIFY – LATEST SHARED TRACKS &nbsp;{" "}
-          <a className="badge" href="https://routinehub.co/shortcut/7741/">
-            <span>Get the iOS Shortcut on RoutineHub</span>
+      <main className="space-y-4">
+        <div>
+          <h1 className="font-bold text-gray-400">
+            IMESSAGE2SPOTIFY – LATEST SHARED TRACKS &nbsp;
+          </h1>
+          <a
+            className=""
+            href="https://routinehub.co/shortcut/7741/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Get the iOS Shortcut on RoutineHub
           </a>
-        </h1>
-        <ul className="track-list">
+        </div>
+        <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-4 xl:grid-cols-6 gap-x-4 gap-y-4">
           {tracks.map((track, index) => (
-            <li key={track.spotify_track_id} className="track-list-item">
-              <a href={track.spotify_url}>
-                <div className="track-image">
-                  <Image
-                    alt={`Album cover art for ${track.artist}'s ${track.album}.`}
-                    src={track.image_url}
-                    height={"256px"}
-                    width={"256px"}
-                    priority={index <= 6}
-                  />
-                </div>
+            <li
+              key={track.spotify_track_id}
+              className="flex sm:block space-x-4 sm:space-x-0 sm:space-y-2"
+            >
+              <a className="flex-shrink-0" href={track.spotify_url}>
+                <img
+                  className="w-32 sm:w-full object-cover"
+                  alt={`Album cover art for ${track.artist}'s ${track.album}.`}
+                  src={track.image_url}
+                  loading={index <= 6 ? "eager" : "lazy"}
+                />
               </a>
-              <div className="track-details">
-                <p className="track-title">
+              <div className="">
+                <p className="text-md">
                   {track.title}
-                  <span className="track-occurrences">{track.occurrences}</span>
+                  {/* <span className="">{track.occurrences}</span> */}
                 </p>
-                <p className="track-artist">{track.artist}</p>
-                <p className="track-album">{track.album}</p>
-                <time
-                  dateTime={track.updated_at}
-                  className="track-share-details"
-                >
-                  {track.updated_at}
+                <p className="font-bold tracking-wide text-sm">
+                  {track.artist}
+                </p>
+                <p className="italic text-sm">{track.album}</p>
+                <time dateTime={track.updated_at} className="text-gray-400">
+                  {formatTimeAgo(track.updated_at)}
                 </time>
               </div>
             </li>
