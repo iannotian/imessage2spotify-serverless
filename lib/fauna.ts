@@ -10,15 +10,21 @@ enum FaunaCollection {
 }
 
 export abstract class FaunaTrack {
-  static translateFromSpotifyTrack(spotifyTrack: SpotifyTrack): FaunaTrack {
+  static translateFromSpotifyTrack(spotifyTrack: SpotifyTrack): {
+    data: FaunaTrack;
+    ref: null;
+  } {
     return {
-      spotify_track_id: spotifyTrack?.id,
-      spotify_url: spotifyTrack?.uri,
-      album: spotifyTrack?.album?.name,
-      artist: spotifyTrack?.artists?.map((artist) => artist?.name).join(", "),
-      image_url: spotifyTrack?.album?.images?.[0].url,
-      occurrences: 1,
-      title: spotifyTrack?.name,
+      ref: null,
+      data: {
+        spotify_track_id: spotifyTrack?.id,
+        spotify_url: spotifyTrack?.uri,
+        album: spotifyTrack?.album?.name,
+        artist: spotifyTrack?.artists?.map((artist) => artist?.name).join(", "),
+        image_url: spotifyTrack?.album?.images?.[0].url,
+        occurrences: 1,
+        title: spotifyTrack?.name,
+      },
     };
   }
 
@@ -48,18 +54,32 @@ export async function getAllTracks() {
 }
 
 export async function getTrackById(id: string) {
-  return await faunaClient.query<any>(
-    q.Get(q.Match(q.Index(FaunaIndex.SPOTIFY_TRACK_ID), id))
-  );
+  try {
+    return await faunaClient.query<any>(
+      q.Get(q.Match(q.Index(FaunaIndex.SPOTIFY_TRACK_ID), id))
+    );
+  } catch (error: any) {
+    const notFound = error.requestResult.responseContent.errors
+      .map((error: any) => error.code)
+      .includes("instance not found");
+
+    if (notFound) {
+      return null;
+    }
+
+    throw error;
+  }
 }
 
-export async function saveTrack(track: FaunaTrack) {
-  const { spotify_track_id } = track;
+export async function saveTrack(track: any) {
+  const {
+    data: { spotify_track_id },
+  } = track;
 
-  const now = Date.now();
+  const now = new Date().toISOString();
 
-  if (spotify_track_id) {
-    // update if existing
+  try {
+    // update if exists
     return await faunaClient.query<any>(
       q.Update(
         q.Select(
@@ -68,19 +88,22 @@ export async function saveTrack(track: FaunaTrack) {
         ),
         {
           data: {
-            ...track,
-            occurrences: track.occurrences + 1,
+            ...track.data,
+            occurrences: track.data.occurrences + 1,
             updated_at: now,
           },
         }
       )
     );
+  } catch (error) {
+    // else, create
+    return await faunaClient.query<any>(
+      q.Create(q.Collection(FaunaCollection.TRACKS), {
+        ...track,
+        occurrences: 1,
+        updated_at: now,
+        created_at: now,
+      })
+    );
   }
-
-  // else, create
-  return await faunaClient.query<any>(
-    q.Create(q.Collection(FaunaCollection.TRACKS), {
-      data: { ...track, occurrences: 1, updated_at: now, created_at: now },
-    })
-  );
 }

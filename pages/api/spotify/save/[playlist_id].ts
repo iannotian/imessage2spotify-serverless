@@ -47,24 +47,31 @@ export default async function handler(
       return;
     }
 
-    let track = await getTrackById(trackId);
-
     // handle upsert into db
-    if (track) {
-      await saveTrack(track);
-    } else {
-      const spotifyTrackResponse = await got({
-        method: "GET",
-        url: `https://api.spotify.com/v1/tracks/${trackId}`,
-        headers: {
-          Authorization: `${token_type} ${access_token}`,
-        },
-        responseType: "json",
-      }).json<SpotifyTrack>();
+    try {
+      let track = await getTrackById(trackId);
 
-      await saveTrack(
-        FaunaTrack.translateFromSpotifyTrack(spotifyTrackResponse)
-      );
+      if (track) {
+        await saveTrack(track);
+      } else {
+        // need more specific track details to save for first time
+        const spotifyTrackResponse = await got({
+          method: "GET",
+          url: `https://api.spotify.com/v1/tracks/${trackId}`,
+          headers: {
+            Authorization: `${token_type} ${access_token}`,
+          },
+          responseType: "json",
+        }).json<SpotifyTrack>();
+
+        await saveTrack(
+          FaunaTrack.translateFromSpotifyTrack(spotifyTrackResponse)
+        );
+      }
+
+      res.status(200).end();
+    } catch (error: any) {
+      res.status(400).json({ faunaError: error });
     }
   } catch (error: any) {
     res.status(400).json({ spotifyResponseBody: error.response.body });

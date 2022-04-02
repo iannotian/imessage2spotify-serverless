@@ -1,5 +1,5 @@
-@playlist_id = 'id'
-@spotify_track_uri = 'uri'
+@playlist_id = someplaylistid
+@spotify_track_uri = spotify:track:sometrackid
 
 POST http://localhost:3000/api/spotify/save/{{playlist_id}}
 Content-Type: application/json
