@@ -19,7 +19,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
 
       <main className="space-y-4">
         <div>
-          <h1 className="font-bold text-gray-400">
+          <h1 className="font-bold text-gray-600 dark:text-gray-400">
             IMESSAGE2SPOTIFY – LATEST SHARED TRACKS &nbsp;
           </h1>
           <a
@@ -39,7 +39,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
             >
               <a className="flex-shrink-0" href={track.spotify_url}>
                 <img
-                  className="w-32 sm:w-full object-cover"
+                  className="w-32 sm:w-full object-cover rounded-sm"
                   alt={`Album cover art for ${track.artist}'s ${track.album}.`}
                   src={track.image_url}
                   loading={index <= 6 ? "eager" : "lazy"}

@@ -29,15 +29,13 @@ export function HotBadge({ count }: { count: number }) {
   const heatLevel = determineHeatLevel(count);
 
   return (
-    <div>
-      <span
-        className={cx(
-          heatMap.get(heatLevel),
-          "uppercase px-1 rounded-md font-semibold"
-        )}
-      >
-        {heatLevel}
-      </span>
-    </div>
+    <span
+      className={cx(
+        heatMap.get(heatLevel),
+        "text-white uppercase px-1 rounded-md"
+      )}
+    >
+      {heatLevel}
+    </span>
   );
 }
