@@ -14,6 +14,8 @@ export abstract class FaunaTrack {
     data: FaunaTrack;
     ref: null;
   } {
+    const now = new Date().toISOString();
+
     return {
       ref: null,
       data: {
@@ -24,6 +26,8 @@ export abstract class FaunaTrack {
         image_url: spotifyTrack?.album?.images?.[0].url,
         occurrences: 1,
         title: spotifyTrack?.name,
+        updated_at: now,
+        created_at: now,
       },
     };
   }
@@ -36,8 +40,8 @@ export abstract class FaunaTrack {
   album!: string;
   image_url!: string;
   occurrences!: number;
-  created_at?: Date;
-  updated_at?: Date;
+  created_at?: string;
+  updated_at?: string;
 }
 
 const faunaClient = new faunadb.Client({
