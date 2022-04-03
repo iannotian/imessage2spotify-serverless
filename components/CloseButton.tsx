@@ -1,7 +1,7 @@
 export function CloseButton({ onClick }: { onClick?: Function }) {
   return (
     <button
-      className="inline-block text-gray-400"
+      className="transition-colors inline-block text-gray-400 hover:text-gray-500 hover:dark:text-gray-300"
       onClick={(e) => onClick && onClick(e)}
     >
       <svg
