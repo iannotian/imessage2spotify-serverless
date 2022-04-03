@@ -51,7 +51,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
                 />
               </a>
               <div className="space-y-2">
-                <HotBadge count={track.occurrences}></HotBadge>
+                <HotBadge count={track.occurrences} />
                 <div>
                   <p className="">{track.title}</p>
                   <p className="font-bold tracking-wide">{track.artist}</p>

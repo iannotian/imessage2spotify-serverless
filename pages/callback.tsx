@@ -2,6 +2,8 @@ import got, { OptionsOfJSONResponseBody } from "got";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import cx from "classnames";
+import React from "react";
 
 const Callback = ({
   data,
@@ -12,6 +14,20 @@ const Callback = ({
   message: string;
   error: any;
 }) => {
+  const [copyStatus, setCopyStatus] = React.useState({
+    success: false,
+    error: false,
+  });
+
+  async function copyToClipboard(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopyStatus({ success: true, error: false });
+    } catch (error) {
+      setCopyStatus({ success: false, error: true });
+    }
+  }
+
   return (
     <div>
       <Head>
@@ -19,21 +35,56 @@ const Callback = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1>IMESSAGE2SPOTIFY – SPOTIFY TOKEN DATA</h1>
-        <p>{message}</p>
+      <main className="space-y-4">
+        <div>
+          <h1 className="text-gray-600 dark:text-gray-400">
+            <span className="block">iMessage2Spotify</span>
+            <span className="block uppercase text-2xl font-bold">
+              Spotify Token Setup
+            </span>
+          </h1>
+        </div>
+        <p
+          className={cx("p-4 rounded-lg", {
+            "bg-red-200 text-red-700": error,
+            "bg-green-200 text-green-700": !error,
+          })}
+        >
+          {message}
+        </p>
         {data && (
-          <textarea
-            contentEditable={false}
-            readOnly={true}
-            id="token-data"
-            value={JSON.stringify(data)}
-          ></textarea>
+          <div className="space-y-4">
+            <button
+              className={cx("rounded-lg text-white px-3 py-2", {
+                "bg-red-500": copyStatus.error,
+                "bg-green-500": copyStatus.success,
+                "bg-blue-500": !copyStatus.success && !copyStatus.error,
+              })}
+              onClick={() => copyToClipboard(JSON.stringify(data))}
+            >
+              {copyStatus.error
+                ? "Failed copy. Try again?"
+                : copyStatus.success
+                ? "Copied!"
+                : "Copy to Clipboard"}
+            </button>
+            <textarea
+              className="block font-mono w-full h-[50vh] rounded-lg"
+              contentEditable={false}
+              readOnly={true}
+              id="token-data"
+              value={JSON.stringify(data, undefined, 2)}
+            ></textarea>
+          </div>
         )}
         {error && (
-          <Link href="/api/spotify/authorize" passHref>
-            <a className="text-blue-600 underline">Try again?</a>
-          </Link>
+          <div>
+            <Link href="/api/spotify/authorize" passHref>
+              <a className="py-2 px-3 bg-gray-600 text-white rounded-lg">
+                Try again?
+              </a>
+            </Link>
+          </div>
         )}
       </main>
     </div>
@@ -73,8 +124,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     return {
       props: {
         data,
-        message: `✅ Authorization successful! Your authorization tokens are below.
-      Select and copy your token data, then press Done to continue
+        message: `✅ Authorization successful! Copy your token data (everything, including the curly braces), then press Done to continue
       iMessage2Spotify setup.`,
         error: null,
       },
