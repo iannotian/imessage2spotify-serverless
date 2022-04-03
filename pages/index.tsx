@@ -1,11 +1,15 @@
 import Head from "next/head";
-import Image from "next/image";
+import React from "react";
+import cx from "classnames";
 import { HotBadge } from "../components/HotBadge";
 import { getAllTracks } from "../lib/fauna";
 import { redis } from "../lib/redis";
 import { formatTimeAgo } from "../lib/util";
+import { CloseButton } from "../components/CloseButton";
 
 const Home = ({ tracks }: { tracks: any[] }) => {
+  const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
+
   return (
     <div>
       <Head>
@@ -25,19 +29,6 @@ const Home = ({ tracks }: { tracks: any[] }) => {
               Latest Shared Tracks
             </span>
           </h1>
-          <aside>
-            <p>
-              Get the Apple Shortcut on{" "}
-              <a
-                className="font-bold text-blue-500"
-                href="https://routinehub.co/shortcut/7741/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                RoutineHub
-              </a>
-            </p>
-          </aside>
         </div>
         <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 md:sm:grid md:grid-cols-4 xl:grid-cols-6 gap-x-4 gap-y-4">
           {tracks.map((track, index) => (
@@ -68,6 +59,25 @@ const Home = ({ tracks }: { tracks: any[] }) => {
           ))}
         </ul>
       </main>
+      <footer
+        className={cx(
+          "p-4 mb-4 flex items-center space-x-2 bg-white dark:bg-gray-600 fixed bottom-0 w-[calc(100vh-7rem)] rounded-xl shadow-xl",
+          { hidden: !showRoutineHubBanner }
+        )}
+      >
+        <CloseButton onClick={() => setShowRoutineHubBanner(false)} />
+        <p className="">
+          Get the Apple Shortcut on{" "}
+          <a
+            className="font-bold text-blue-500"
+            href="https://routinehub.co/shortcut/7741/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            RoutineHub
+          </a>
+        </p>
+      </footer>
     </div>
   );
 };
