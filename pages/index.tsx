@@ -25,7 +25,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
 
       <main className="space-y-8">
         <PageHeading>Latest Shared Tracks</PageHeading>
-        <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 md:sm:grid md:grid-cols-4 xl:grid-cols-6 gap-x-4 gap-y-4">
+        <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 md:sm:grid md:grid-cols-4 gap-x-4 gap-y-4">
           {tracks.map((track, index) => (
             <li key={track.spotify_track_id}>
               <Track track={track} loading={index <= 6 ? "eager" : "lazy"} />
