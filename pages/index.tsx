@@ -18,10 +18,16 @@ const Home = ({ tracks }: { tracks: any[] }) => {
       </Head>
 
       <main className="space-y-4">
-        <div>
-          <h1 className="text-gray-600 dark:text-gray-400">
-            <span className="block">
-              iMessage2Spotify - Get the iOS Shortcut on{" "}
+        <div className="">
+          <h1 className="text-gray-600 dark:text-gray-400 flex-shrink-0">
+            <span className="block">iMessage2Spotify</span>
+            <span className="block uppercase text-2xl font-bold">
+              Latest Shared Tracks
+            </span>
+          </h1>
+          <aside>
+            <p>
+              Get the Apple Shortcut on{" "}
               <a
                 className="font-bold text-blue-500"
                 href="https://routinehub.co/shortcut/7741/"
@@ -30,11 +36,8 @@ const Home = ({ tracks }: { tracks: any[] }) => {
               >
                 RoutineHub
               </a>
-            </span>
-            <span className="block uppercase text-2xl font-bold">
-              Latest Shared Tracks
-            </span>
-          </h1>
+            </p>
+          </aside>
         </div>
         <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 md:sm:grid md:grid-cols-4 xl:grid-cols-6 gap-x-4 gap-y-4">
           {tracks.map((track, index) => (
