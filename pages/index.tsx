@@ -23,7 +23,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
 
       <main className="space-y-8">
         <div className="">
-          <h1 className="text-gray-600 dark:text-gray-400 flex-shrink-0">
+          <h1 className="text-gray-500 dark:text-gray-400 flex-shrink-0">
             <span className="block">iMessage2Spotify</span>
             <span className="block uppercase text-2xl font-bold">
               Latest Shared Tracks

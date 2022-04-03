@@ -37,7 +37,7 @@ const Callback = ({
 
       <main className="space-y-8">
         <div>
-          <h1 className="text-gray-600 dark:text-gray-400">
+          <h1 className="text-gray-500 dark:text-gray-400">
             <span className="block">iMessage2Spotify</span>
             <span className="block uppercase text-2xl font-bold">
               Spotify Token Setup
