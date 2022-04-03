@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import cx from "classnames";
 import React from "react";
+import { PageHeading } from "../components/PageHeading";
 
 const Callback = ({
   data,
@@ -36,14 +37,7 @@ const Callback = ({
       </Head>
 
       <main className="space-y-8">
-        <div>
-          <h1 className="text-gray-500 dark:text-gray-400">
-            <span className="block">iMessage2Spotify</span>
-            <span className="block uppercase text-2xl font-bold">
-              Spotify Token Setup
-            </span>
-          </h1>
-        </div>
+        <PageHeading>Spotify Token Setup</PageHeading>
         <div className="space-y-4">
           <div
             className={cx("space-y-2 p-4 rounded-lg inline-block max-w-2xl", {

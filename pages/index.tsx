@@ -6,6 +6,8 @@ import { getAllTracks } from "../lib/fauna";
 import { redis } from "../lib/redis";
 import { formatTimeAgo } from "../lib/util";
 import { CloseButton } from "../components/CloseButton";
+import { Track } from "../components/Track";
+import { PageHeading } from "../components/PageHeading";
 
 const Home = ({ tracks }: { tracks: any[] }) => {
   const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
@@ -22,39 +24,11 @@ const Home = ({ tracks }: { tracks: any[] }) => {
       </Head>
 
       <main className="space-y-8">
-        <div className="">
-          <h1 className="text-gray-500 dark:text-gray-400 flex-shrink-0">
-            <span className="block">iMessage2Spotify</span>
-            <span className="block uppercase text-2xl font-bold">
-              Latest Shared Tracks
-            </span>
-          </h1>
-        </div>
+        <PageHeading>Latest Shared Tracks</PageHeading>
         <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 md:sm:grid md:grid-cols-4 xl:grid-cols-6 gap-x-4 gap-y-4">
           {tracks.map((track, index) => (
-            <li
-              key={track.spotify_track_id}
-              className="flex sm:block space-x-4 sm:space-x-0 sm:space-y-4"
-            >
-              <a className="flex-shrink-0" href={track.spotify_url}>
-                <img
-                  className="transition-all duration-300 hover:scale-105 w-32 sm:w-full object-cover rounded-sm shadow-xl hover:shadow-2xl dark:shadow-none"
-                  alt={`Album cover art for ${track.artist}'s ${track.album}.`}
-                  src={track.image_url}
-                  loading={index <= 6 ? "eager" : "lazy"}
-                />
-              </a>
-              <div className="space-y-2">
-                <HotBadge count={track.occurrences} />
-                <div>
-                  <p className="">{track.title}</p>
-                  <p className="font-bold tracking-wide">{track.artist}</p>
-                  <p className="italic">{track.album}</p>
-                  <time dateTime={track.updated_at} className="text-gray-400">
-                    {formatTimeAgo(track.updated_at)}
-                  </time>
-                </div>
-              </div>
+            <li key={track.spotify_track_id}>
+              <Track track={track} loading={index <= 6 ? "eager" : "lazy"} />
             </li>
           ))}
         </ul>
