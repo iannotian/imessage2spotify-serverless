@@ -2,7 +2,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import React from "react";
 import Router from "next/router";
-import { Spinner } from "../components/Spinner";
+import { PageSpinner } from "../components/PageSpinner";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = React.useState(false);
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     };
   }, []);
 
-  return <>{loading ? <Spinner /> : <Component {...pageProps} />}</>;
+  return <>{loading ? <PageSpinner /> : <Component {...pageProps} />}</>;
 }
 
 export default MyApp;

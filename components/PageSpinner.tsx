@@ -1,6 +1,6 @@
 import cx from "classnames";
 
-export function Spinner() {
+export function PageSpinner() {
   const isSpinning = true;
 
   return (
