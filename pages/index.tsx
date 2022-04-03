@@ -17,7 +17,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="space-y-4">
+      <main className="space-y-8">
         <div className="">
           <h1 className="text-gray-600 dark:text-gray-400 flex-shrink-0">
             <span className="block">iMessage2Spotify</span>

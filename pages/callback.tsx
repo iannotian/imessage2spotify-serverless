@@ -35,7 +35,7 @@ const Callback = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="space-y-4">
+      <main className="space-y-8">
         <div>
           <h1 className="text-gray-600 dark:text-gray-400">
             <span className="block">iMessage2Spotify</span>
@@ -44,48 +44,51 @@ const Callback = ({
             </span>
           </h1>
         </div>
-        <p
-          className={cx("p-4 rounded-lg", {
-            "bg-red-200 text-red-700": error,
-            "bg-green-200 text-green-700": !error,
-          })}
-        >
-          {message}
-        </p>
-        {data && (
-          <div className="space-y-4">
-            <button
-              className={cx("rounded-lg text-white px-3 py-2", {
-                "bg-red-500": copyStatus.error,
-                "bg-green-500": copyStatus.success,
-                "bg-blue-500": !copyStatus.success && !copyStatus.error,
-              })}
-              onClick={() => copyToClipboard(JSON.stringify(data))}
-            >
-              {copyStatus.error
-                ? "Failed copy. Try again?"
-                : copyStatus.success
-                ? "Copied!"
-                : "Copy to Clipboard"}
-            </button>
-            <textarea
-              className="block font-mono w-full h-[50vh] rounded-lg"
-              contentEditable={false}
-              readOnly={true}
-              id="token-data"
-              value={JSON.stringify(data, undefined, 2)}
-            ></textarea>
+        <div className="space-y-4">
+          <div
+            className={cx("space-y-2 p-4 rounded-lg inline-block max-w-2xl", {
+              "bg-red-200 text-red-700": error,
+              "bg-green-200 text-green-700": !error,
+            })}
+          >
+            <p>{message}</p>
+            {error && <p>Error: {error}</p>}
           </div>
-        )}
-        {error && (
-          <div>
-            <Link href="/api/spotify/authorize" passHref>
-              <a className="py-2 px-3 bg-gray-600 text-white rounded-lg">
-                Try again?
-              </a>
-            </Link>
-          </div>
-        )}
+          {data && (
+            <div className="space-y-4">
+              <button
+                className={cx("rounded-lg text-white px-3 py-2", {
+                  "bg-red-500": copyStatus.error,
+                  "bg-green-500": copyStatus.success,
+                  "bg-blue-500": !copyStatus.success && !copyStatus.error,
+                })}
+                onClick={() => copyToClipboard(JSON.stringify(data))}
+              >
+                {copyStatus.error
+                  ? "Failed copy. Try again?"
+                  : copyStatus.success
+                  ? "Copied!"
+                  : "Copy to Clipboard"}
+              </button>
+              <textarea
+                className="block font-mono w-full h-[50vh] rounded-lg"
+                contentEditable={false}
+                readOnly={true}
+                id="token-data"
+                value={JSON.stringify(data, undefined, 2)}
+              ></textarea>
+            </div>
+          )}
+          {error && (
+            <div>
+              <Link href="/api/spotify/authorize" passHref>
+                <a className="inline-block py-2 px-3 bg-gray-600 text-white rounded-lg">
+                  Try again?
+                </a>
+              </Link>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );
@@ -99,8 +102,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       props: {
         data: null,
         message:
-          "Unsuccessful authorization. Please log out of Spotify in Safari and try again.",
-        error: error ? error : "Missing code from Spotify.",
+          "There was an issue with authorization. Try logging out of Spotify in Safari if this persists.",
+        error: error ?? "Missing Spotify code in query parameter.",
       },
     };
   }
@@ -133,7 +136,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     return {
       props: {
         message:
-          "An error occurred while requesting an access token via Spotify.",
+          "💥 An error occurred while requesting an access token via Spotify.",
         data: null,
         error: error.response.body,
       },
