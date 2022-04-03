@@ -61,7 +61,7 @@ const Home = ({ tracks }: { tracks: any[] }) => {
       </main>
       <footer
         className={cx(
-          "p-4 mb-4 flex items-center space-x-2 bg-white dark:bg-gray-600 fixed bottom-0 w-[calc(100vh-7rem)] rounded-xl shadow-xl",
+          "p-4 mb-4 flex items-center space-x-1 bg-white dark:bg-gray-600 fixed bottom-0 rounded-xl shadow-lg",
           { hidden: !showRoutineHubBanner }
         )}
       >
