@@ -138,7 +138,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         message:
           "💥 An error occurred while requesting an access token via Spotify.",
         data: null,
-        error: error.response.body,
+        error: error.response.body.error_description,
       },
     };
   }
