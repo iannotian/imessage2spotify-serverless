@@ -85,11 +85,11 @@ export function Track({
           )}
         </div>
         <div>
-          <p className=" text-2xl leading-tight">{track.title}</p>
+          <p className="mb-[3px] text-2xl leading-tight">{track.title}</p>
           <p className="font-bold tracking-wide">{track.artist}</p>
           <p className="italic">{track.album}</p>
           {track.updated_at && (
-            <time dateTime={track.updated_at} className="text-gray-400">
+            <time dateTime={track.updated_at} className="text-gray-400 text-sm">
               {formatTimeAgo(track.updated_at)}
             </time>
           )}
