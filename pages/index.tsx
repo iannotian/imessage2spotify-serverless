@@ -7,6 +7,7 @@ import { redis } from "../lib/redis";
 import { CloseButton } from "../components/CloseButton";
 import { Track } from "../components/Track";
 import { PageHeading } from "../components/PageHeading";
+import { ExternalLinkIcon } from "@heroicons/react/solid";
 
 const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
   const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
@@ -65,20 +66,21 @@ const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
       </main>
       <footer
         className={cx(
-          "p-4 mb-4 flex items-center space-x-1 bg-white dark:bg-gray-600 fixed bottom-0 rounded-xl shadow-lg",
+          "p-4 mb-4 flex items-center space-x-1 bg-white dark:bg-gray-800 fixed bottom-0 rounded-xl shadow-lg",
           { hidden: !showRoutineHubBanner }
         )}
       >
         <CloseButton onClick={() => setShowRoutineHubBanner(false)} />
         <p className="">
-          Get the Apple Shortcut on{" "}
+          Get the Apple Shortcut for iOS on{" "}
           <a
-            className="font-bold text-blue-500"
+            className="font-bold text-blue-500 dark:text-blue-400"
             href="https://routinehub.co/shortcut/7741/"
             target="_blank"
             rel="noreferrer"
           >
             RoutineHub
+            <ExternalLinkIcon className="inline h-4 w-4 ml-[2px] mb-[3px]" />
           </a>
         </p>
       </footer>
