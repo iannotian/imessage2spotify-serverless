@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import cx from "classnames";
-import { getAllTracks } from "../lib/fauna";
+import { FaunaTrack, getAllTracks } from "../lib/fauna";
 import { redis } from "../lib/redis";
 import { CloseButton } from "../components/CloseButton";
 import { Track } from "../components/Track";
@@ -9,8 +9,30 @@ import { PageHeading } from "../components/PageHeading";
 
 const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
   const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
-  const [currentlyPlayingTrackUrl, setCurrentlyPlayingTrackUrl] =
-    React.useState<string | null>(null);
+  const [currentPlayingTrack, setCurrentPlayingTrack] =
+    React.useState<FaunaTrack | null>(null);
+  const audioStream = React.useRef({
+    stop: () => {},
+    start: (url?: string) => {},
+    pause: () => {},
+    isPlaying: false,
+  });
+
+  function handlePressPlay(track: FaunaTrack) {
+    if (!audioStream.current.isPlaying) {
+      audioStream.current.start(track.spotify_url);
+      return;
+    }
+
+    if (track.spotify_track_id === currentPlayingTrack?.spotify_track_id) {
+      audioStream.current.pause();
+      return;
+    }
+
+    audioStream.current.start(track.spotify_url);
+
+    setCurrentPlayingTrack(track);
+  }
 
   return (
     <div className="max-w-4xl w-full">
@@ -28,7 +50,11 @@ const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
         <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 md:sm:grid md:grid-cols-4 gap-x-4 gap-y-4">
           {tracks.map((track, index) => (
             <li key={track.spotify_track_id}>
-              <Track track={track} loading={index <= 6 ? "eager" : "lazy"} />
+              <Track
+                track={track}
+                loading={index <= 6 ? "eager" : "lazy"}
+                onPressPlay={() => handlePressPlay(track)}
+              />
             </li>
           ))}
         </ul>
