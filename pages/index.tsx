@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import cx from "classnames";
+import { useAudioPlayer } from "react-use-audio-player";
 import { FaunaTrack, getAllTracks } from "../lib/fauna";
 import { redis } from "../lib/redis";
 import { CloseButton } from "../components/CloseButton";
@@ -12,31 +13,24 @@ const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
   const [currentPlayingTrack, setCurrentPlayingTrack] =
     React.useState<FaunaTrack | null>(null);
 
-  const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
-
-  React.useEffect(() => {
-    setAudio(new Audio());
-  }, []);
+  const { ready, loading, playing, play, pause } = useAudioPlayer({
+    src: currentPlayingTrack?.spotify_preview_url,
+    format: "mp3",
+    autoplay: "false",
+  });
 
   function handlePressPlay(track: FaunaTrack) {
-    if (!audio || !track.spotify_preview_url) {
-      return;
-    }
-
     setCurrentPlayingTrack(track);
 
-    if (audio.paused) {
-      audio.play();
+    if (
+      playing &&
+      track.spotify_preview_url === currentPlayingTrack?.spotify_preview_url
+    ) {
+      pause();
       return;
     }
 
-    if (track.spotify_preview_url === audio?.src) {
-      audio.pause();
-      return;
-    }
-
-    audio.src = track.spotify_preview_url;
-    audio.play();
+    play();
   }
 
   return (
@@ -59,7 +53,11 @@ const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
                 track={track}
                 loading={index <= 6 ? "eager" : "lazy"}
                 onPressPlay={() => handlePressPlay(track)}
-                isPlaying={track.spotify_preview_url === audio?.src}
+                isPlaying={
+                  playing &&
+                  track.spotify_preview_url ===
+                    currentPlayingTrack?.spotify_preview_url
+                }
               />
             </li>
           ))}
