@@ -79,10 +79,10 @@ export function Track({
       </div>
       <div className="space-y-2">
         <div className="flex space-x-2">
+          <HotBadge count={track.occurrences} />
           {track.spotify_preview_url && (
             <MusicNoteIcon className="flex-shrink-0 w-6 h-6" />
           )}
-          <HotBadge count={track.occurrences} />
         </div>
         <div>
           <p className="">{track.title}</p>
