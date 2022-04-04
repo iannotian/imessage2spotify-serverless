@@ -65,7 +65,7 @@ const Callback = ({
                   : "Copy to Clipboard"}
               </button>
               <textarea
-                className="block font-mono w-full h-[50vh] rounded-lg"
+                className="block font-mono w-full h-[50vh] rounded-lg dark:bg-gray-800"
                 contentEditable={false}
                 readOnly={true}
                 id="token-data"
