@@ -9,12 +9,12 @@ export function Track({
   track,
   loading,
   onPressPlay,
-  currentPlayingTrackUrl,
+  isPlaying,
 }: {
   track: FaunaTrack;
   loading?: "eager" | "lazy";
   onPressPlay?: Function;
-  currentPlayingTrackUrl?: string;
+  isPlaying?: boolean;
 }) {
   const [showLocalControls, setShowLocalControls] = React.useState(false);
 
@@ -46,14 +46,14 @@ export function Track({
           )}
         >
           <div className="flex flex-shrink-0 justify-around items-center h-full w-full">
-            {onPressPlay && (
+            {track.spotify_preview_url && onPressPlay && (
               <button
-                onClick={() => onPressPlay(track.spotify_url)}
+                onClick={() => onPressPlay(track)}
                 className="text-white p-4"
                 onFocus={() => setShowLocalControls(true)}
                 onBlur={() => setShowLocalControls(false)}
               >
-                {currentPlayingTrackUrl ? (
+                {isPlaying ? (
                   <PauseIcon className="text-white h-6 w-6" />
                 ) : (
                   <PlayIcon className="text-white h-6 w-6" />

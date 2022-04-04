@@ -21,6 +21,7 @@ export abstract class FaunaTrack {
       data: {
         spotify_track_id: spotifyTrack?.id,
         spotify_url: spotifyTrack?.uri,
+        spotify_preview_url: spotifyTrack?.preview_url,
         album: spotifyTrack?.album?.name,
         artist: spotifyTrack?.artists?.map((artist) => artist?.name).join(", "),
         image_url: spotifyTrack?.album?.images?.[0].url,
@@ -35,6 +36,7 @@ export abstract class FaunaTrack {
   id?: number;
   spotify_track_id!: string;
   spotify_url!: string;
+  spotify_preview_url!: string | null;
   title!: string;
   artist!: string;
   album!: string;

@@ -11,27 +11,32 @@ const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
   const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
   const [currentPlayingTrack, setCurrentPlayingTrack] =
     React.useState<FaunaTrack | null>(null);
-  const audioStream = React.useRef({
-    stop: () => {},
-    start: (url?: string) => {},
-    pause: () => {},
-    isPlaying: false,
-  });
+
+  const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
+
+  React.useEffect(() => {
+    setAudio(new Audio());
+  }, []);
 
   function handlePressPlay(track: FaunaTrack) {
-    if (!audioStream.current.isPlaying) {
-      audioStream.current.start(track.spotify_url);
+    if (!audio || !track.spotify_preview_url) {
       return;
     }
-
-    if (track.spotify_track_id === currentPlayingTrack?.spotify_track_id) {
-      audioStream.current.pause();
-      return;
-    }
-
-    audioStream.current.start(track.spotify_url);
 
     setCurrentPlayingTrack(track);
+
+    if (audio.paused) {
+      audio.play();
+      return;
+    }
+
+    if (track.spotify_preview_url === audio?.src) {
+      audio.pause();
+      return;
+    }
+
+    audio.src = track.spotify_preview_url;
+    audio.play();
   }
 
   return (
@@ -54,6 +59,7 @@ const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
                 track={track}
                 loading={index <= 6 ? "eager" : "lazy"}
                 onPressPlay={() => handlePressPlay(track)}
+                isPlaying={track.spotify_preview_url === audio?.src}
               />
             </li>
           ))}
