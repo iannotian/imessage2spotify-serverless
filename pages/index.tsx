@@ -1,19 +1,19 @@
 import Head from "next/head";
 import React from "react";
 import cx from "classnames";
-import { HotBadge } from "../components/HotBadge";
 import { getAllTracks } from "../lib/fauna";
 import { redis } from "../lib/redis";
-import { formatTimeAgo } from "../lib/util";
 import { CloseButton } from "../components/CloseButton";
 import { Track } from "../components/Track";
 import { PageHeading } from "../components/PageHeading";
 
-const Home = ({ tracks }: { tracks: any[] }) => {
+const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
   const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
+  const [currentlyPlayingTrackUrl, setCurrentlyPlayingTrackUrl] =
+    React.useState<string | null>(null);
 
   return (
-    <div>
+    <div className="max-w-4xl w-full">
       <Head>
         <title>iMessage2Spotify</title>
         <meta
