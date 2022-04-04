@@ -14,7 +14,7 @@ const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
   const [currentPlayingTrack, setCurrentPlayingTrack] =
     React.useState<FaunaTrack | null>(null);
 
-  const { ready, loading, playing, play, pause } = useAudioPlayer({
+  const { playing, play, pause } = useAudioPlayer({
     src: currentPlayingTrack?.spotify_preview_url,
     format: "mp3",
     autoplay: "false",
@@ -66,13 +66,13 @@ const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
       </main>
       <footer
         className={cx(
-          "p-4 mb-4 flex items-center space-x-1 bg-white dark:bg-gray-800 fixed bottom-0 rounded-xl shadow-lg",
+          "p-4 mb-4 flex items-center space-x-2 bg-white dark:bg-gray-800 fixed bottom-0 rounded-xl shadow-lg",
           { hidden: !showRoutineHubBanner }
         )}
       >
         <CloseButton onClick={() => setShowRoutineHubBanner(false)} />
-        <p className="">
-          Get the Apple Shortcut for iOS on{" "}
+        <p>
+          Get the iOS Shortcut on{" "}
           <a
             className="font-bold text-blue-500 dark:text-blue-400"
             href="https://routinehub.co/shortcut/7741/"

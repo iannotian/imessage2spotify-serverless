@@ -43,7 +43,7 @@ export function Track({
         />
         <div
           className={cx(
-            "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 rounded-lg overflow-hidden transition-all shadow-lg bg-gray-500",
+            "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg overflow-hidden transition-all",
             {
               "opacity-0 scale-95 pointer-events-none":
                 !showLocalControls && !isPlaying,
@@ -51,7 +51,7 @@ export function Track({
             }
           )}
         >
-          <div className="flex flex-shrink-0 justify-around items-center h-full w-full">
+          <div className="flex flex-shrink-0 justify-around items-center h-full w-full bg-gray-500/80 shadow-inner p-2">
             {track.spotify_preview_url && onPressPlay && (
               <button
                 onClick={() => onPressPlay(track)}
