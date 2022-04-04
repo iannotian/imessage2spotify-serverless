@@ -85,7 +85,7 @@ export function Track({
           )}
         </div>
         <div>
-          <p className="">{track.title}</p>
+          <p className=" text-2xl leading-tight">{track.title}</p>
           <p className="font-bold tracking-wide">{track.artist}</p>
           <p className="italic">{track.album}</p>
           {track.updated_at && (
