@@ -3,7 +3,12 @@ import cx from "classnames";
 import { FaunaTrack } from "../lib/fauna";
 import { formatTimeAgo } from "../lib/util";
 import { HotBadge } from "./HotBadge";
-import { PlayIcon, PauseIcon, ExternalLinkIcon } from "@heroicons/react/solid";
+import {
+  PlayIcon,
+  PauseIcon,
+  MusicNoteIcon,
+  ExternalLinkIcon,
+} from "@heroicons/react/solid";
 
 export function Track({
   track,
@@ -73,7 +78,12 @@ export function Track({
         </div>
       </div>
       <div className="space-y-2">
-        <HotBadge count={track.occurrences} />
+        <div className="flex space-x-2">
+          {track.spotify_preview_url && (
+            <MusicNoteIcon className="flex-shrink-0 w-6 h-6" />
+          )}
+          <HotBadge count={track.occurrences} />
+        </div>
         <div>
           <p className="">{track.title}</p>
           <p className="font-bold tracking-wide">{track.artist}</p>
