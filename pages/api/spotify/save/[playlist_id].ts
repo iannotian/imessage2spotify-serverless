@@ -1,12 +1,7 @@
 import got, { OptionsOfJSONResponseBody } from "got";
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  FaunaTrack,
-  getAllTracks,
-  getTrackById,
-  saveTrack,
-} from "../../../../lib/fauna";
-import { redis } from "../../../../lib/redis";
+import { FaunaTrack, getTrackById, saveTrack } from "../../../../lib/fauna";
+import { refreshCache } from "../../../../lib/redis";
 import { SpotifyTrack } from "../../../../lib/types";
 
 export default async function handler(
@@ -78,10 +73,7 @@ export default async function handler(
       res.status(200).end();
 
       if (process.env.NODE_ENV === "production") {
-        const faunaTracks = await getAllTracks();
-        const tracks = faunaTracks.data.map((track: any) => track.data);
-
-        redis.set("tracks", tracks);
+        await refreshCache();
       }
     } catch (error: any) {
       res.status(400).json({ faunaError: error });
