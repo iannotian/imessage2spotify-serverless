@@ -51,7 +51,7 @@ export function Track({
             }
           )}
         >
-          <div className="flex flex-shrink-0 justify-around items-center h-full w-full bg-gray-500/80 shadow-inner p-2">
+          <div className="flex flex-shrink-0 space-x-2 justify-around items-center h-full w-full bg-gray-500/80 shadow-inner p-2">
             {track.spotify_preview_url && onPressPlay && (
               <button
                 onClick={() => onPressPlay(track)}
@@ -66,14 +66,16 @@ export function Track({
                 )}
               </button>
             )}
-            <a
-              className="text-white p-4 rounded transition-colors hover:bg-slate-600 focus:bg-slate-600"
-              href={track.spotify_url}
-              onFocus={() => setShowLocalControls(true)}
-              onBlur={() => setShowLocalControls(false)}
-            >
-              <ExternalLinkIcon className="text-white h-6 w-6" />
-            </a>
+            {track.spotify_url && (
+              <a
+                className="text-white p-4 rounded transition-colors hover:bg-slate-600 focus:bg-slate-600"
+                href={track.spotify_url}
+                onFocus={() => setShowLocalControls(true)}
+                onBlur={() => setShowLocalControls(false)}
+              >
+                <ExternalLinkIcon className="text-white h-6 w-6" />
+              </a>
+            )}
           </div>
         </div>
       </div>
