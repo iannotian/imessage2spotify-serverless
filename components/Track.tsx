@@ -55,7 +55,7 @@ export function Track({
             {track.spotify_preview_url && onPressPlay && (
               <button
                 onClick={() => onPressPlay(track)}
-                className="text-white p-4"
+                className="text-white p-4 rounded transition-colors hover:bg-slate-600 focus:bg-slate-600"
                 onFocus={() => setShowLocalControls(true)}
                 onBlur={() => setShowLocalControls(false)}
               >
@@ -67,7 +67,7 @@ export function Track({
               </button>
             )}
             <a
-              className="text-white p-4"
+              className="text-white p-4 rounded transition-colors hover:bg-slate-600 focus:bg-slate-600"
               href={track.spotify_url}
               onFocus={() => setShowLocalControls(true)}
               onBlur={() => setShowLocalControls(false)}
