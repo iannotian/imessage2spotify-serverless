@@ -1,7 +1,7 @@
 import cx from "classnames";
 
 enum HeatLevel {
-  NEW = "New Entry",
+  NEW = "New",
   MILD = "Mild",
   SPICY = "Spicy",
   FIRE = "Fire",
