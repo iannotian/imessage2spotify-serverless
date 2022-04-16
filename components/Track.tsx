@@ -34,7 +34,7 @@ export function Track({
           className={cx(
             "transition-all duration-300 w-32 sm:w-full object-cover rounded-sm hover:shadow-2xl dark:shadow-none",
             {
-              "blur-sm shadow-xl": showLocalControls || isPlaying,
+              "blur-sm shadow-xl scale-95": showLocalControls || isPlaying,
             }
           )}
           alt={`Album cover art for ${track.artist}'s ${track.album}.`}
@@ -45,9 +45,10 @@ export function Track({
           className={cx(
             "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg overflow-hidden transition-all",
             {
-              "opacity-0 scale-95 pointer-events-none":
+              "opacity-0 scale-110 pointer-events-none":
                 !showLocalControls && !isPlaying,
-              "opacity-100 pointer-events-auto": showLocalControls || isPlaying,
+              "opacity-100 scale-100 pointer-events-auto":
+                showLocalControls || isPlaying,
             }
           )}
         >
