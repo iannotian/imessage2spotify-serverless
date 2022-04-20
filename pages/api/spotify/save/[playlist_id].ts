@@ -70,11 +70,11 @@ export default async function handler(
         );
       }
 
-      res.status(200).end();
-
       if (process.env.NODE_ENV === "production") {
         await refreshCache();
       }
+
+      res.status(200).end();
     } catch (error: any) {
       res.status(400).json({ faunaError: error });
     }
