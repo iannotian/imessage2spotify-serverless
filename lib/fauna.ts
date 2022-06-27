@@ -53,7 +53,9 @@ const faunaClient = new faunadb.Client({
 export async function getAllTracks() {
   return await faunaClient.query<any>(
     q.Map(
-      q.Paginate(q.Documents(q.Collection(FaunaCollection.TRACKS))),
+      q.Paginate(q.Documents(q.Collection(FaunaCollection.TRACKS)), {
+        size: 100000,
+      }),
       q.Lambda((track) => q.Get(track))
     )
   );
