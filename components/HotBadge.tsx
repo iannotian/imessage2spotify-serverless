@@ -7,13 +7,11 @@ enum HeatLevel {
   FIRE = "Fire",
 }
 
-type TWColor = "red" | "orange" | "yellow" | "green" | "blue" | "gray";
+type TWBaseColor = "red" | "orange" | "yellow" | "green" | "blue" | "gray";
 type TWNumber = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+type TWColorString = `bg-${TWBaseColor}-${TWNumber}`;
 
-const heatLevelToTwBgColorClassMap: Map<
-  HeatLevel,
-  `bg-${TWColor}-${TWNumber}`
-> = new Map();
+const heatLevelToTwBgColorClassMap: Map<HeatLevel, TWColorString> = new Map();
 heatLevelToTwBgColorClassMap.set(HeatLevel.NEW, "bg-gray-400");
 heatLevelToTwBgColorClassMap.set(HeatLevel.MILD, "bg-yellow-600");
 heatLevelToTwBgColorClassMap.set(HeatLevel.SPICY, "bg-orange-500");
