@@ -86,9 +86,9 @@ export async function getServerSideProps() {
     }
   }
 
-  const dbTracks = await findAllTracks();
+  const tracks = await findAllTracks();
 
-  return { props: { tracks: dbTracks.reverse() } };
+  return { props: { tracks: JSON.parse(JSON.stringify(tracks)) } };
 }
 
 export default Home;
