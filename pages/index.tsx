@@ -6,10 +6,12 @@ import useSWRInfinite from "swr/infinite";
 import { Track } from "../components/Track";
 import { PageHeading } from "../components/PageHeading";
 import { RoutineHubBanner } from "../components/RoutineHubBanner";
-import { PrismaTrack } from "../lib/db";
+import { findTracksAtCursor, PrismaTrack } from "../lib/db";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
 
-const Home: React.FC = () => {
+type GetTracksResponse = { data: PrismaTrack[]; nextCursor: string };
+
+const Home: React.FC<{ fallback: GetTracksResponse }> = ({ fallback }) => {
   const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
   const [currentPlayingTrack, setCurrentPlayingTrack] =
     React.useState<PrismaTrack | null>(null);
@@ -19,8 +21,6 @@ const Home: React.FC = () => {
     format: "mp3",
     autoplay: "false",
   });
-
-  type GetTracksResponse = { data: PrismaTrack[]; nextCursor: string };
 
   const fetcher = async (url: string) => {
     const response = await fetch(url);
@@ -40,7 +40,8 @@ const Home: React.FC = () => {
 
   const { data, size, setSize } = useSWRInfinite<GetTracksResponse>(
     getKey,
-    fetcher
+    fetcher,
+    { fallback }
   );
 
   useBottomScrollListener(() => setSize(size + 1), {
@@ -112,5 +113,15 @@ const Home: React.FC = () => {
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      fallback: JSON.parse(
+        JSON.stringify(await findTracksAtCursor(new Date(), 12, 0))
+      ),
+    },
+  };
+}
 
 export default Home;
