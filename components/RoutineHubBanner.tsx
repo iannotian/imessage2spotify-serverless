@@ -8,7 +8,7 @@ export function RoutineHubBanner({
   onClickClose: () => void;
 }) {
   return (
-    <div>
+    <div className="flex space-x-2">
       <CloseButton onClick={() => onClickClose()} />
       <p>
         Get the iOS Shortcut on{" "}
