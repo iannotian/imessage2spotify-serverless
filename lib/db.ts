@@ -12,6 +12,28 @@ export const findAllTracks = async (take?: number) => {
   });
 };
 
+export const findTracksAtCursor = async (
+  cursor: Date,
+  take: number,
+  skip: number
+) => {
+  const tracks = await prisma.track.findMany({
+    where: {
+      updatedAt: {
+        lt: cursor,
+      },
+    },
+    orderBy: { updatedAt: "desc" },
+    take,
+    skip,
+  });
+
+  return {
+    data: tracks,
+    nextCursor: tracks.length > 0 ? tracks[tracks.length - 1].updatedAt : null,
+  };
+};
+
 export const findTrackBySpotifyId = async (spotifyTrackId: string) => {
   return await prisma.track.findUnique({
     where: {
