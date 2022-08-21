@@ -11,3 +11,19 @@ datasource db {
   url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
+
+model Track {
+  id                String   @id @default(uuid())
+  spotifyTrackId    String   @unique
+  spotifyUrl        String   @unique
+  spotifyPreviewUrl String   @unique
+  title             String
+  artist            String
+  album             String
+  imageUrl          String
+  occurrences       Int      @default(0)
+  createdAt         DateTime
+  updatedAt         DateTime
+
+  @@index(spotifyTrackId)
+}
