@@ -7,6 +7,7 @@ import { redis } from "../lib/redis";
 import { Track } from "../components/Track";
 import { PageHeading } from "../components/PageHeading";
 import { RoutineHubBanner } from "../components/RoutineHubBanner";
+import { findAllTracks } from "../lib/db";
 
 const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
   const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
@@ -86,10 +87,9 @@ export async function getServerSideProps() {
     }
   }
 
-  const faunaTracks = await getAllTracks();
-  const tracks = faunaTracks.data.map((track: any) => track.data);
+  const dbTracks = await findAllTracks();
 
-  return { props: { tracks: tracks.reverse() } };
+  return { props: { tracks: dbTracks.reverse() } };
 }
 
 export default Home;
