@@ -46,7 +46,7 @@ const Home: React.FC<{ tracks: PrismaTrack[] }> = ({ tracks }) => {
 
       <main className="space-y-8">
         <PageHeading>Latest Shared Tracks</PageHeading>
-        <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 md:sm:grid md:grid-cols-4 gap-x-4 gap-y-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-3 md:sm:grid md:grid-cols-4 gap-x-4 sm:gap-y-12 gap-y-4">
           {tracks.map((track, index) => (
             <li key={track.spotifyTrackId}>
               <Track
