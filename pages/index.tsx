@@ -7,6 +7,7 @@ import { Track } from "../components/Track";
 import { PageHeading } from "../components/PageHeading";
 import { RoutineHubBanner } from "../components/RoutineHubBanner";
 import { PrismaTrack } from "../lib/db";
+import { useBottomScrollListener } from "react-bottom-scroll-listener";
 
 const Home: React.FC = () => {
   const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
@@ -37,7 +38,15 @@ const Home: React.FC = () => {
     return `/api/tracks?cursor=${previousPageData.nextCursor}&take=12`;
   };
 
-  const { data } = useSWRInfinite<GetTracksResponse>(getKey, fetcher);
+  const { data, size, setSize } = useSWRInfinite<GetTracksResponse>(
+    getKey,
+    fetcher
+  );
+
+  useBottomScrollListener(() => setSize(size + 1), {
+    debounce: 500,
+    triggerOnNoScroll: false,
+  });
 
   const [hoveredTrack, setHoveredTrack] = React.useState<PrismaTrack | null>(
     null
