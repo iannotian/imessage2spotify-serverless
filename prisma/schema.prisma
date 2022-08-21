@@ -16,7 +16,7 @@ model Track {
   id                String   @id @default(uuid())
   spotifyTrackId    String   @unique
   spotifyUrl        String   @unique
-  spotifyPreviewUrl String   @unique
+  spotifyPreviewUrl String?  @unique
   title             String
   artist            String
   album             String
