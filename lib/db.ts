@@ -1,10 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma, Track } from "@prisma/client";
 import { SpotifyTrack } from "./types";
+
+export type PrismaTrack = Prisma.TrackGetPayload<{}>;
 
 const prisma = new PrismaClient();
 
 export const findAllTracks = async () => {
-  return await prisma.track.findMany();
+  return await prisma.track.findMany({ orderBy: { updatedAt: "desc" } });
 };
 
 export const findTrackBySpotifyId = async (spotifyTrackId: string) => {
@@ -15,30 +17,34 @@ export const findTrackBySpotifyId = async (spotifyTrackId: string) => {
   });
 };
 
-export const saveTrack = async (track: SpotifyTrack) => {
-  const { id } = track;
+export const incrementOccurrencesForTrack = async (existingTrack: Track) => {
+  return await prisma.track.update({
+    where: {
+      id: existingTrack.id,
+    },
+    data: {
+      occurrences: existingTrack.occurrences + 1,
+    },
+  });
+};
+
+export const saveTrack = async (spotifyTrack: SpotifyTrack) => {
+  const { id } = spotifyTrack;
 
   const existingTrack = await findTrackBySpotifyId(id);
 
   if (existingTrack) {
-    return await prisma.track.update({
-      where: {
-        id: existingTrack.id,
-      },
-      data: {
-        occurrences: existingTrack.occurrences + 1,
-      },
-    });
+    return incrementOccurrencesForTrack(existingTrack);
   } else {
     return await prisma.track.create({
       data: {
-        title: track.name,
-        artist: track.artists.map((artist) => artist.name).join(", "),
-        album: track.album.name,
-        imageUrl: track.album.images[0].url,
-        spotifyTrackId: track.id,
-        spotifyUrl: track.uri,
-        spotifyPreviewUrl: track.preview_url,
+        title: spotifyTrack.name,
+        artist: spotifyTrack.artists.map((artist) => artist.name).join(", "),
+        album: spotifyTrack.album.name,
+        imageUrl: spotifyTrack.album.images[0].url,
+        spotifyTrackId: spotifyTrack.id,
+        spotifyUrl: spotifyTrack.uri,
+        spotifyPreviewUrl: spotifyTrack.preview_url,
       },
     });
   }

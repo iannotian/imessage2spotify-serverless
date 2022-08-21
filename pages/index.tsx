@@ -2,30 +2,29 @@ import Head from "next/head";
 import React from "react";
 import cx from "classnames";
 import { useAudioPlayer } from "react-use-audio-player";
-import { FaunaTrack, getAllTracks } from "../lib/fauna";
 import { redis } from "../lib/redis";
 import { Track } from "../components/Track";
 import { PageHeading } from "../components/PageHeading";
 import { RoutineHubBanner } from "../components/RoutineHubBanner";
-import { findAllTracks } from "../lib/db";
+import { findAllTracks, PrismaTrack } from "../lib/db";
 
-const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
+const Home: React.FC<{ tracks: PrismaTrack[] }> = ({ tracks }) => {
   const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
   const [currentPlayingTrack, setCurrentPlayingTrack] =
-    React.useState<FaunaTrack | null>(null);
+    React.useState<PrismaTrack | null>(null);
 
   const { playing, play, pause } = useAudioPlayer({
-    src: currentPlayingTrack?.spotify_preview_url,
+    src: currentPlayingTrack?.spotifyPreviewUrl,
     format: "mp3",
     autoplay: "false",
   });
 
-  function handlePressPlay(track: FaunaTrack) {
+  function handlePressPlay(track: PrismaTrack) {
     setCurrentPlayingTrack(track);
 
     if (
       playing &&
-      track.spotify_preview_url === currentPlayingTrack?.spotify_preview_url
+      track.spotifyPreviewUrl === currentPlayingTrack?.spotifyPreviewUrl
     ) {
       pause();
       return;
@@ -49,15 +48,15 @@ const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
         <PageHeading>Latest Shared Tracks</PageHeading>
         <ul className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 md:sm:grid md:grid-cols-4 gap-x-4 gap-y-4">
           {tracks.map((track, index) => (
-            <li key={track.spotify_track_id}>
+            <li key={track.spotifyTrackId}>
               <Track
                 track={track}
                 loading={index <= 6 ? "eager" : "lazy"}
                 onPressPlay={() => handlePressPlay(track)}
                 isPlaying={
                   playing &&
-                  track.spotify_preview_url ===
-                    currentPlayingTrack?.spotify_preview_url
+                  track.spotifyPreviewUrl ===
+                    currentPlayingTrack?.spotifyPreviewUrl
                 }
               />
             </li>

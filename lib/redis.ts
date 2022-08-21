@@ -1,5 +1,5 @@
 import { Redis } from "@upstash/redis";
-import { getAllTracks } from "./fauna";
+import { findAllTracks } from "./db";
 
 export const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL ?? "",
@@ -7,8 +7,7 @@ export const redis = new Redis({
 });
 
 export async function refreshCache() {
-  const faunaTracks = await getAllTracks();
-  const tracks = faunaTracks.data.map((track: any) => track.data);
+  const tracks = await findAllTracks();
 
   redis.set("tracks", tracks);
 }

@@ -1,6 +1,10 @@
 import got, { OptionsOfJSONResponseBody } from "got";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { FaunaTrack, getTrackById, saveTrack } from "../../../../lib/fauna";
+import {
+  findTrackBySpotifyId,
+  incrementOccurrencesForTrack,
+  saveTrack,
+} from "../../../../lib/db";
 import { refreshCache } from "../../../../lib/redis";
 import { SpotifyTrack } from "../../../../lib/types";
 
@@ -24,7 +28,7 @@ export default async function handler(
     return;
   }
 
-  const reqConfig: OptionsOfJSONResponseBody = {
+  const addToPlaylistRequestConfig: OptionsOfJSONResponseBody = {
     method: "POST",
     url: `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
     json: {
@@ -38,7 +42,7 @@ export default async function handler(
 
   try {
     // save track to user's spotify playlist
-    const response = await got(reqConfig).json();
+    const addToPlaylistResponse = await got(addToPlaylistRequestConfig).json();
 
     const uri = uris[0] as string;
     const trackId = uri.split(":").pop();
@@ -50,13 +54,13 @@ export default async function handler(
 
     // handle upsert into db
     try {
-      let track = await getTrackById(trackId);
+      let track = await findTrackBySpotifyId(trackId);
 
       if (track) {
-        await saveTrack(track);
+        await incrementOccurrencesForTrack(track);
       } else {
         // need more specific track details to save for first time
-        const spotifyTrackResponse = await got({
+        const spotifyTrack = await got({
           method: "GET",
           url: `https://api.spotify.com/v1/tracks/${trackId}`,
           headers: {
@@ -65,9 +69,7 @@ export default async function handler(
           responseType: "json",
         }).json<SpotifyTrack>();
 
-        await saveTrack(
-          FaunaTrack.translateFromSpotifyTrack(spotifyTrackResponse)
-        );
+        await saveTrack(spotifyTrack);
       }
 
       if (process.env.NODE_ENV === "production") {
