@@ -26,8 +26,11 @@ export function Track({
   return (
     <div className="flex sm:block space-x-4 sm:space-x-0 sm:space-y-4">
       <div
-        onPointerEnter={() => setShowLocalControls(true)}
-        onPointerLeave={() => setShowLocalControls(false)}
+        style={{ WebkitTouchCallout: "none" }}
+        onTouchStart={() => setShowLocalControls(true)}
+        onMouseEnter={() => setShowLocalControls(true)}
+        onMouseLeave={() => setShowLocalControls(false)}
+        onBlur={() => setShowLocalControls(false)}
         className="relative flex-shrink-0 self-start"
       >
         <img
