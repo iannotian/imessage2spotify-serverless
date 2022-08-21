@@ -92,7 +92,7 @@ export async function getServerSideProps() {
     }
   }
 
-  const tracks = await findAllTracks();
+  const tracks = await findAllTracks(12);
 
   return { props: { tracks: JSON.parse(JSON.stringify(tracks)) } };
 }

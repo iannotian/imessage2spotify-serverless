@@ -5,8 +5,11 @@ export type PrismaTrack = Prisma.TrackGetPayload<{}>;
 
 const prisma = new PrismaClient();
 
-export const findAllTracks = async () => {
-  return await prisma.track.findMany({ orderBy: { updatedAt: "desc" } });
+export const findAllTracks = async (take?: number) => {
+  return await prisma.track.findMany({
+    orderBy: { updatedAt: "desc" },
+    take,
+  });
 };
 
 export const findTrackBySpotifyId = async (spotifyTrackId: string) => {
