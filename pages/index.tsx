@@ -8,6 +8,7 @@ import { CloseButton } from "../components/CloseButton";
 import { Track } from "../components/Track";
 import { PageHeading } from "../components/PageHeading";
 import { ExternalLinkIcon } from "@heroicons/react/solid";
+import { RoutineHubBanner } from "../components/RoutineHubBanner";
 
 const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
   const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
@@ -70,19 +71,7 @@ const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
           { hidden: !showRoutineHubBanner }
         )}
       >
-        <CloseButton onClick={() => setShowRoutineHubBanner(false)} />
-        <p>
-          Get the iOS Shortcut on{" "}
-          <a
-            className="font-bold text-blue-500 dark:text-blue-400"
-            href="https://routinehub.co/shortcut/7741/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            RoutineHub
-            <ExternalLinkIcon className="inline h-4 w-4 ml-[2px] mb-[3px]" />
-          </a>
-        </p>
+        <RoutineHubBanner onClickClose={() => setShowRoutineHubBanner(false)} />
       </footer>
     </div>
   );
