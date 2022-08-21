@@ -23,7 +23,7 @@ model Track {
   imageUrl          String
   occurrences       Int      @default(0)
   createdAt         DateTime
-  updatedAt         DateTime
+  updatedAt         DateTime @updatedAt
 
   @@index(spotifyTrackId)
 }
