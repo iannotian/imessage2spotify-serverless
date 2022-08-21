@@ -9,3 +9,9 @@ Content-Type: application/json
   "access_token": "{{spotifyAccessToken}}",
   "uris": ["{{spotify_track_uri}}"]
 }
+
+##############################################################################################
+
+@cursor = 2022-08-17T00:37:32.561Z
+@take = 12
+GET http://localhost:3000/api/tracks?cursor={{cursor}}&take={{take}}
