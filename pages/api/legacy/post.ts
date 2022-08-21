@@ -1,7 +1,7 @@
 import { SpotifyTrack } from "../../../lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
-import { FaunaTrack, getTrackById, saveTrack } from "../../../lib/fauna";
 import { refreshCache } from "../../../lib/redis";
+import { findTrackBySpotifyId, saveTrack } from "../../../lib/db";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,13 +9,8 @@ export default async function handler(
 ) {
   try {
     const spotifyTrack = req.body.track as SpotifyTrack;
-    const dbTrack = await getTrackById(spotifyTrack.id);
+    saveTrack(spotifyTrack);
 
-    if (dbTrack) {
-      await saveTrack(dbTrack);
-    } else {
-      await saveTrack(FaunaTrack.translateFromSpotifyTrack(spotifyTrack));
-    }
     if (process.env.NODE_ENV === "production") {
       await refreshCache();
     }

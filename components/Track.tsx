@@ -1,6 +1,5 @@
 import React from "react";
 import cx from "classnames";
-import { FaunaTrack } from "../lib/fauna";
 import { formatTimeAgo } from "../lib/util";
 import { HotBadge } from "./HotBadge";
 import {
@@ -9,6 +8,7 @@ import {
   MusicNoteIcon,
   ExternalLinkIcon,
 } from "@heroicons/react/solid";
+import { PrismaTrack } from "../lib/db";
 
 export function Track({
   track,
@@ -16,7 +16,7 @@ export function Track({
   onPressPlay,
   isPlaying,
 }: {
-  track: FaunaTrack;
+  track: PrismaTrack;
   loading?: "eager" | "lazy";
   onPressPlay?: Function;
   isPlaying?: boolean;
@@ -38,7 +38,7 @@ export function Track({
             }
           )}
           alt={`Album cover art for ${track.artist}'s ${track.album}.`}
-          src={track.image_url}
+          src={track.imageUrl}
           loading={loading}
         />
         <div
@@ -53,7 +53,7 @@ export function Track({
           )}
         >
           <div className="flex flex-shrink-0 space-x-2 justify-around items-center h-full w-full bg-gray-500/80 shadow-inner p-2">
-            {track.spotify_preview_url && onPressPlay && (
+            {track.spotifyPreviewUrl && onPressPlay && (
               <button
                 onClick={() => onPressPlay(track)}
                 className="text-white p-4 rounded transition-colors hover:bg-slate-600 focus:bg-slate-600"
@@ -67,10 +67,10 @@ export function Track({
                 )}
               </button>
             )}
-            {track.spotify_url && (
+            {track.spotifyUrl && (
               <a
                 className="text-white p-4 rounded transition-colors hover:bg-slate-600 focus:bg-slate-600"
-                href={track.spotify_url}
+                href={track.spotifyUrl}
                 onFocus={() => setShowLocalControls(true)}
                 onBlur={() => setShowLocalControls(false)}
               >
@@ -83,7 +83,7 @@ export function Track({
       <div className="space-y-2">
         <div className="flex space-x-2">
           <HotBadge count={track.occurrences} />
-          {track.spotify_preview_url && (
+          {track.spotifyPreviewUrl && (
             <MusicNoteIcon className="flex-shrink-0 w-6 h-6" />
           )}
         </div>
@@ -91,9 +91,12 @@ export function Track({
           <p className="mb-[3px] text-2xl leading-tight">{track.title}</p>
           <p className="font-bold tracking-wide">{track.artist}</p>
           <p className="italic">{track.album}</p>
-          {track.updated_at && (
-            <time dateTime={track.updated_at} className="text-gray-400 text-sm">
-              {formatTimeAgo(track.updated_at)}
+          {track.updatedAt && (
+            <time
+              dateTime={track.updatedAt.toString()}
+              className="text-gray-400 text-sm"
+            >
+              {formatTimeAgo(track.updatedAt.toString())}
             </time>
           )}
         </div>
