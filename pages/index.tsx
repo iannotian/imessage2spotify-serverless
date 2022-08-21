@@ -4,10 +4,8 @@ import cx from "classnames";
 import { useAudioPlayer } from "react-use-audio-player";
 import { FaunaTrack, getAllTracks } from "../lib/fauna";
 import { redis } from "../lib/redis";
-import { CloseButton } from "../components/CloseButton";
 import { Track } from "../components/Track";
 import { PageHeading } from "../components/PageHeading";
-import { ExternalLinkIcon } from "@heroicons/react/solid";
 import { RoutineHubBanner } from "../components/RoutineHubBanner";
 
 const Home: React.FC<{ tracks: any[] }> = ({ tracks }) => {
