@@ -45,7 +45,7 @@ const Home: React.FC<{ fallback: GetTracksResponse }> = ({ fallback }) => {
   );
 
   useBottomScrollListener(() => setSize(size + 1), {
-    debounce: 500,
+    debounce: 1000,
     triggerOnNoScroll: false,
   });
 
