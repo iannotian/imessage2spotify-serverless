@@ -19,6 +19,10 @@ const Home: React.FC<{ tracks: PrismaTrack[] }> = ({ tracks }) => {
     autoplay: "false",
   });
 
+  const [hoveredTrack, setHoveredTrack] = React.useState<PrismaTrack | null>(
+    null
+  );
+
   function handlePressPlay(track: PrismaTrack) {
     setCurrentPlayingTrack(track);
 
@@ -58,6 +62,8 @@ const Home: React.FC<{ tracks: PrismaTrack[] }> = ({ tracks }) => {
                   track.spotifyPreviewUrl ===
                     currentPlayingTrack?.spotifyPreviewUrl
                 }
+                isHovered={hoveredTrack?.id === track.id}
+                setHoveredTrack={setHoveredTrack}
               />
             </li>
           ))}

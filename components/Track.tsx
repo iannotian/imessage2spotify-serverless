@@ -15,29 +15,31 @@ export function Track({
   loading,
   onPressPlay,
   isPlaying,
+  isHovered,
+  setHoveredTrack,
 }: {
   track: PrismaTrack;
   loading?: "eager" | "lazy";
-  onPressPlay?: Function;
-  isPlaying?: boolean;
+  onPressPlay: Function;
+  isPlaying: boolean;
+  isHovered: boolean;
+  setHoveredTrack: (track: PrismaTrack | null) => void;
 }) {
-  const [showLocalControls, setShowLocalControls] = React.useState(false);
-
   return (
     <div className="flex sm:block space-x-4 sm:space-x-0 sm:space-y-4">
       <div
         style={{ WebkitTouchCallout: "none" }}
-        onTouchStart={() => setShowLocalControls(true)}
-        onMouseEnter={() => setShowLocalControls(true)}
-        onMouseLeave={() => setShowLocalControls(false)}
-        onBlur={() => setShowLocalControls(false)}
+        onTouchStart={() => setHoveredTrack(track)}
+        onMouseEnter={() => setHoveredTrack(track)}
+        onMouseLeave={() => setHoveredTrack(null)}
+        onBlur={() => setHoveredTrack(null)}
         className="relative flex-shrink-0 self-start"
       >
         <img
           className={cx(
             "transition-all duration-100 w-32 sm:w-full object-cover rounded-sm hover:shadow-2xl dark:shadow-none",
             {
-              "blur-sm shadow-xl scale-95": showLocalControls || isPlaying,
+              "blur-sm shadow-xl scale-95": isHovered || isPlaying,
             }
           )}
           alt={`Album cover art for ${track.artist}'s ${track.album}.`}
@@ -49,9 +51,9 @@ export function Track({
             "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg overflow-hidden transition-all",
             {
               "opacity-0 scale-110 pointer-events-none":
-                !showLocalControls && !isPlaying,
+                !isHovered && !isPlaying,
               "opacity-100 scale-100 pointer-events-auto":
-                showLocalControls || isPlaying,
+                isHovered || isPlaying,
             }
           )}
         >
@@ -60,8 +62,8 @@ export function Track({
               <button
                 onClick={() => onPressPlay(track)}
                 className="text-white p-4 rounded transition-colors hover:bg-slate-600 focus:bg-slate-600"
-                onFocus={() => setShowLocalControls(true)}
-                onBlur={() => setShowLocalControls(false)}
+                onFocus={() => setHoveredTrack(track)}
+                onBlur={() => setHoveredTrack(null)}
               >
                 {isPlaying ? (
                   <PauseIcon className="text-white h-6 w-6" />
@@ -74,8 +76,8 @@ export function Track({
               <a
                 className="text-white p-4 rounded transition-colors hover:bg-slate-600 focus:bg-slate-600"
                 href={track.spotifyUrl}
-                onFocus={() => setShowLocalControls(true)}
-                onBlur={() => setShowLocalControls(false)}
+                onFocus={() => setHoveredTrack(track)}
+                onBlur={() => setHoveredTrack(null)}
               >
                 <ExternalLinkIcon className="text-white h-6 w-6" />
               </a>
