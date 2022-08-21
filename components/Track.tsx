@@ -85,9 +85,9 @@ export function Track({
       </div>
       <div className="space-y-2">
         <div>
-          <p className="mb-[3px] text-2xl leading-tight">{track.title}</p>
-          <p className="font-bold tracking-wide">{track.artist}</p>
-          <p className="italic">{track.album}</p>
+          <p className="mb-[3px] text-xl leading-tight">{track.title}</p>
+          <p className="text-sm font-semibold tracking-wide">{track.artist}</p>
+          <p className="text-sm italic leading-tight">{track.album}</p>
           {track.updatedAt && (
             <time
               dateTime={track.updatedAt.toString()}
