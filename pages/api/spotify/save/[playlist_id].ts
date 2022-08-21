@@ -78,7 +78,7 @@ export default async function handler(
 
       res.status(200).end();
     } catch (error: any) {
-      res.status(400).json({ faunaError: error });
+      res.status(400).json({ error });
     }
   } catch (error: any) {
     res.status(400).json({ spotifyResponseBody: error.response.body });
