@@ -26,13 +26,13 @@ export function Track({
   return (
     <div className="flex sm:block space-x-4 sm:space-x-0 sm:space-y-4">
       <div
-        onMouseEnter={() => setShowLocalControls(true)}
-        onMouseLeave={() => setShowLocalControls(false)}
+        onPointerEnter={() => setShowLocalControls(true)}
+        onPointerLeave={() => setShowLocalControls(false)}
         className="relative flex-shrink-0 self-start"
       >
         <img
           className={cx(
-            "transition-all duration-300 w-32 sm:w-full object-cover rounded-sm hover:shadow-2xl dark:shadow-none",
+            "transition-all duration-100 w-32 sm:w-full object-cover rounded-sm hover:shadow-2xl dark:shadow-none",
             {
               "blur-sm shadow-xl scale-95": showLocalControls || isPlaying,
             }
