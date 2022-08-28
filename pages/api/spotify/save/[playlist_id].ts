@@ -5,7 +5,6 @@ import {
   incrementOccurrencesForTrack,
   saveTrack,
 } from "../../../../lib/db";
-import { refreshCache } from "../../../../lib/redis";
 import { SpotifyTrack } from "../../../../lib/types";
 
 export default async function handler(
@@ -70,10 +69,6 @@ export default async function handler(
         }).json<SpotifyTrack>();
 
         await saveTrack(spotifyTrack);
-      }
-
-      if (process.env.NODE_ENV === "production") {
-        await refreshCache();
       }
 
       res.status(200).end();
