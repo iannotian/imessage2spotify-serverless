@@ -42,10 +42,15 @@ const Home: React.FC = () => {
   const { data, size, setSize, isValidating } =
     useSWRInfinite<GetTracksResponse>(getKey, fetcher);
 
-  useBottomScrollListener(() => setSize(size + 1), {
-    debounce: 1000,
-    triggerOnNoScroll: false,
-  });
+  useBottomScrollListener(
+    () => {
+      if (!isValidating) setSize(size + 1);
+    },
+    {
+      debounce: 1000,
+      triggerOnNoScroll: false,
+    }
+  );
 
   const [hoveredTrack, setHoveredTrack] = React.useState<PrismaTrack | null>(
     null
