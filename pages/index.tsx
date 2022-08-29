@@ -6,12 +6,13 @@ import useSWRInfinite from "swr/infinite";
 import { Track } from "../components/Track";
 import { PageHeading } from "../components/PageHeading";
 import { RoutineHubBanner } from "../components/RoutineHubBanner";
-import { findTracksAtCursor, PrismaTrack } from "../lib/db";
+import { PrismaTrack } from "../lib/db";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 type GetTracksResponse = { data: PrismaTrack[]; nextCursor: string };
 
-const Home: React.FC<{ fallback: GetTracksResponse }> = ({ fallback }) => {
+const Home: React.FC = () => {
   const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
   const [currentPlayingTrack, setCurrentPlayingTrack] =
     React.useState<PrismaTrack | null>(null);
@@ -38,11 +39,8 @@ const Home: React.FC<{ fallback: GetTracksResponse }> = ({ fallback }) => {
     return `/api/tracks?cursor=${previousPageData.nextCursor}&take=12`;
   };
 
-  const { data, size, setSize } = useSWRInfinite<GetTracksResponse>(
-    getKey,
-    fetcher,
-    { fallback }
-  );
+  const { data, size, setSize, isValidating } =
+    useSWRInfinite<GetTracksResponse>(getKey, fetcher);
 
   useBottomScrollListener(() => setSize(size + 1), {
     debounce: 1000,
@@ -101,6 +99,11 @@ const Home: React.FC<{ fallback: GetTracksResponse }> = ({ fallback }) => {
               </li>
             ))}
         </ul>
+        {isValidating && (
+          <div className="flex justify-center">
+            <LoadingSpinner />
+          </div>
+        )}
       </main>
       <footer
         className={cx(
@@ -113,15 +116,5 @@ const Home: React.FC<{ fallback: GetTracksResponse }> = ({ fallback }) => {
     </div>
   );
 };
-
-export async function getServerSideProps() {
-  return {
-    props: {
-      fallback: JSON.parse(
-        JSON.stringify(await findTracksAtCursor(new Date(), 12, 0))
-      ),
-    },
-  };
-}
 
 export default Home;
