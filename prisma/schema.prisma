@@ -15,8 +15,8 @@ datasource db {
 model Track {
   id                String   @id @default(uuid())
   spotifyTrackId    String   @unique
-  spotifyUrl        String   @unique
-  spotifyPreviewUrl String?  @unique
+  spotifyUrl        String
+  spotifyPreviewUrl String?
   title             String
   artist            String
   album             String
@@ -25,5 +25,5 @@ model Track {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @default(now()) @updatedAt
 
-  @@index(spotifyTrackId)
+  @@index([updatedAt(sort: Desc)])
 }
