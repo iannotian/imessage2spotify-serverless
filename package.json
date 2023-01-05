@@ -14,6 +14,7 @@
     "classnames": "^2.3.1",
     "got": "^11.8.5",
     "next": "^13.1.1",
+    "next-axiom": "^0.16.0",
     "react": "^18.2.0",
     "react-bottom-scroll-listener": "^5.1.0",
     "react-dom": "^18.2.0",
