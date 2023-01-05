@@ -5,7 +5,7 @@ import { useAudioPlayer } from "react-use-audio-player";
 import useSWRInfinite from "swr/infinite";
 import { Track } from "../components/Track";
 import { PageHeading } from "../components/PageHeading";
-import { RoutineHubBanner } from "../components/RoutineHubBanner";
+import { DownloadLinkBanner } from "../components/DownloadLinkBanner";
 import { PrismaTrack } from "../lib/db";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
 import { LoadingSpinner } from "../components/LoadingSpinner";
@@ -13,7 +13,8 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 type GetTracksResponse = { data: PrismaTrack[]; nextCursor: string };
 
 const Home: React.FC = () => {
-  const [showRoutineHubBanner, setShowRoutineHubBanner] = React.useState(true);
+  const [showDownloadLinkBanner, setShowDownloadLinkBanner] =
+    React.useState(true);
   const [currentPlayingTrack, setCurrentPlayingTrack] =
     React.useState<PrismaTrack | null>(null);
 
@@ -113,10 +114,12 @@ const Home: React.FC = () => {
       <footer
         className={cx(
           "p-4 mb-4 flex items-center space-x-2 bg-white dark:bg-gray-800 fixed bottom-0 rounded-xl shadow-lg",
-          { hidden: !showRoutineHubBanner }
+          { hidden: !showDownloadLinkBanner }
         )}
       >
-        <RoutineHubBanner onClickClose={() => setShowRoutineHubBanner(false)} />
+        <DownloadLinkBanner
+          onDismiss={() => setShowDownloadLinkBanner(false)}
+        />
       </footer>
     </div>
   );
