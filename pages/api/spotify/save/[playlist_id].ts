@@ -4,15 +4,15 @@ import {
   findTrackBySpotifyId,
   incrementOccurrencesForTrack,
   saveTrack,
-} from "../../../../lib/db";
-import { SpotifyTrack } from "../../../../lib/types";
+} from "~/lib/db";
+import { SpotifyTrack } from "~/lib/types";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { token_type, access_token, uris } = req.body;
-  const { playlist_id } = req.query;
+  const playlist_id = req.query.playlist_id as string;
 
   if (
     !token_type ||
@@ -25,6 +25,37 @@ export default async function handler(
       message: `Missing token_type (${token_type}), access_token (${access_token}), uris (${uris}), or playlist_id (${playlist_id}). Or uris is longer than 1.`,
     });
     return;
+  }
+
+  const uri = uris[0] as `spotify:track:${string}`;
+  const possibleShortenedLinkPath = uri.split(":").pop();
+
+  // due to new spotify url format, need to check if uri is a shortened link
+  // better solution would be to directly check if uri is a shortened link
+  // but that involves shortcut changes and not something i want to do
+  // spotify track ids are 22 characters long; skip if already true
+  if (possibleShortenedLinkPath?.length !== 22) {
+    // make request assuming it's a shortened link
+    const spotifyLinkResponse = await got({
+      method: "GET",
+      url: `https://spotify.link/${possibleShortenedLinkPath}`,
+    });
+
+    // use regex to get find trackId from html
+    const regex = /href="[^"]*track\/([a-zA-Z0-9]+)\?/gm;
+    const match = regex.exec(spotifyLinkResponse.body);
+
+    if (!match) {
+      // if no match, then it's not a shortened link
+      // and it's probably not a track id either
+      // weird
+      res.status(400).json({ message: "spotify link not found", uris });
+      return;
+    }
+
+    // replace what was indeed a shortened link with full uri
+    // mutating this is not ideal, but it's easy
+    uris[0] = `spotify:track:${match[1]}`;
   }
 
   const addToPlaylistRequestConfig: OptionsOfJSONResponseBody = {
@@ -43,7 +74,8 @@ export default async function handler(
     // save track to user's spotify playlist
     const addToPlaylistResponse = await got(addToPlaylistRequestConfig).json();
 
-    const uri = uris[0] as string;
+    // remember uris[0] is possibly mutated above
+    const uri = uris[0] as `spotify:track:${string}`;
     const trackId = uri.split(":").pop();
 
     if (!trackId) {
