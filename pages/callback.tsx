@@ -4,7 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import cx from "classnames";
 import React from "react";
-import { PageHeading } from "../components/PageHeading";
+import { PageHeading } from "~/components/PageHeading";
 
 const Callback = ({
   data,

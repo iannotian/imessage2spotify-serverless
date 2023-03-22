@@ -3,12 +3,12 @@ import React from "react";
 import cx from "classnames";
 import { useAudioPlayer } from "react-use-audio-player";
 import useSWRInfinite from "swr/infinite";
-import { Track } from "../components/Track";
-import { PageHeading } from "../components/PageHeading";
-import { DownloadLinkBanner } from "../components/DownloadLinkBanner";
-import { PrismaTrack } from "../lib/db";
+import { Track } from "~/components/Track";
+import { PageHeading } from "~/components/PageHeading";
+import { DownloadLinkBanner } from "~/components/DownloadLinkBanner";
+import { PrismaTrack } from "~/lib/db";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
-import { LoadingSpinner } from "../components/LoadingSpinner";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 
 type GetTracksResponse = { data: PrismaTrack[]; nextCursor: string };
 

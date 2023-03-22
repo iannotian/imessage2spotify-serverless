@@ -1,6 +1,6 @@
 import React from "react";
 import cx from "classnames";
-import { formatTimeAgo } from "../lib/util";
+import { formatTimeAgo } from "~/lib/util";
 import { HotBadge } from "./HotBadge";
 import {
   PlayIcon,
@@ -8,7 +8,7 @@ import {
   MusicNoteIcon,
   ExternalLinkIcon,
 } from "@heroicons/react/solid";
-import { PrismaTrack } from "../lib/db";
+import { PrismaTrack } from "~/lib/db";
 
 export function Track({
   track,
