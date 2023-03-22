@@ -1,12 +1,18 @@
-## Getting Started
+## iMessage2Spotify
 
-```bash
-npm i
-npm run dev
-```
+This is a backend that powers the Apple Shortcut `iMessage2Spotify`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser.
+## Development
 
-## Motivation
+### Running locally (easiest way)
 
-Heroku's free tier has abysmal cold-starts. Using Vercel's free FaaS offering is much more suited to this app, since the cold-starts would cause issues when making requests with Apple Shortcuts in the background.
+- Add `.env` file with contents of `.env.example`
+- Configure a PlanetScale DB and add that `DATABASE_URL` to `.env`
+- Configure a Spotify Developer account, create an app, and add its client ID, secret, etc. to `.env`.
+- Run `npm i`
+- Run `npx prisma db push` to migrate the DB
+- Run `npm run dev` to start the server
+- Open [http://localhost:3000](http://localhost:3000) with your browser.
+
+### Deployment
+It's straightforward with Vercel: link your Git repo, update your environment variables, and you're good to go
