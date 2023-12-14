@@ -1,31 +1,44 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextRequest, NextResponse } from "next/server";
 import { findTracksAtCursor } from "~/lib/db";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export const config = {
+  runtime: "edge",
+};
+
+export default async function handler(req: NextRequest, res: NextResponse) {
   if (req.method !== "GET") {
-    res.status(405).json({ error: "Method not allowed" });
-    return;
+    return new Response(null, { status: 405 });
   }
 
-  const parsedDate = new Date(req.query.cursor as string);
+  const { searchParams } = new URL(req.url);
+  const cursor = searchParams.get("cursor");
+  const take = parseInt(searchParams.get("take") as string) ?? 10;
+
+  const parsedDate = new Date(cursor as string);
   const isCursorValidDate = !isNaN(parsedDate.getTime());
 
   const date = isCursorValidDate ? parsedDate : new Date();
-  const take = parseInt(req.query.take as string) ?? 10;
 
   const skip = isCursorValidDate ? 1 : 0;
 
   try {
     const { data, nextCursor } = await findTracksAtCursor(date, take, skip);
 
-    res.status(200).json({
-      data,
-      nextCursor,
-    });
+    return new Response(
+      JSON.stringify({
+        data,
+        nextCursor,
+      }),
+      { status: 200 }
+    );
   } catch (error: any) {
-    res.status(500).json({ error: error.message, date, take });
+    return new Response(
+      JSON.stringify({
+        error: error.message,
+        date,
+        take,
+      }),
+      { status: 500 }
+    );
   }
 }
