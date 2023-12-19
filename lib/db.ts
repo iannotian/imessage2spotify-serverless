@@ -1,6 +1,6 @@
 import { Client } from "@planetscale/database";
 import { PrismaPlanetScale } from "@prisma/adapter-planetscale";
-import { PrismaClient, Prisma, Track } from "@prisma/client";
+import { PrismaClient, Prisma, Track } from "@prisma/client/edge";
 import { SpotifyTrack } from "./types";
 
 export type PrismaTrack = Prisma.TrackGetPayload<{}>;

@@ -6,6 +6,12 @@ const nextConfig = {
   images: {
     domains: ["i.scdn.co"],
   },
+  webpack: (config) => {
+    config.experiments ??= {};
+    config.experiments.asyncWebAssembly = true;
+
+    return config;
+  },
 };
 
 module.exports = withAxiom({ ...nextConfig });

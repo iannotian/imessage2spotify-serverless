@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
-    "@planetscale/database": "^1.11.0",
-    "@prisma/adapter-planetscale": "^5.7.0",
-    "@prisma/client": "^5.7.0",
+    "@planetscale/database": "^1.13.0",
+    "@prisma/adapter-planetscale": "^5.8.0-dev.32",
+    "@prisma/client": "^5.8.0-dev.32",
     "classnames": "^2.3.2",
     "got": "^11.8.6",
     "next": "^13.5.6",
@@ -34,7 +34,7 @@
     "eslint": "^8.55.0",
     "eslint-config-next": "^13.5.6",
     "postcss": "^8.4.32",
-    "prisma": "^5.7.0",
+    "prisma": "^5.8.0-dev.32",
     "tailwindcss": "^3.3.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
