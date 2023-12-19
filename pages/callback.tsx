@@ -6,6 +6,8 @@ import cx from "classnames";
 import React from "react";
 import { PageHeading } from "~/components/PageHeading";
 
+export const runtime = "edge";
+
 const Callback = ({
   data,
   message,
