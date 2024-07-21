@@ -1,9 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export const config = {
-  runtime: "edge",
-};
-
 export default async function handler(
   _req: NextApiRequest,
   res: NextApiResponse
