@@ -1,16 +1,15 @@
 import type { NextRequest, NextResponse } from "next/server";
 import { findTracksAtCursor } from "~/lib/db";
 
-export const config = {
-  runtime: "edge",
-};
-
 export default async function handler(req: NextRequest, res: NextResponse) {
   if (req.method !== "GET") {
     return new Response(null, { status: 405 });
   }
 
-  const { searchParams } = new URL(req.url);
+  console.log({ req: req.nextUrl });
+
+  const searchParams = req.nextUrl.searchParams;
+
   const cursor = searchParams.get("cursor");
   const take = parseInt(searchParams.get("take") as string) ?? 10;
 
