@@ -1,13 +1,9 @@
-import { Client } from "@planetscale/database";
-import { PrismaPlanetScale } from "@prisma/adapter-planetscale";
 import { PrismaClient, Prisma, Track } from "@prisma/client";
 import { SpotifyTrack } from "./types";
 
 export type PrismaTrack = Prisma.TrackGetPayload<{}>;
 
-const client = new Client({ url: process.env.DATABASE_URL });
-const adapter = new PrismaPlanetScale(client);
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 export const findAllTracks = async (take?: number) => {
   return await prisma.track.findMany({
