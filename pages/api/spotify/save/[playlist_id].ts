@@ -105,7 +105,13 @@ export default async function handler(
 
       res.status(200).end();
     } catch (error: any) {
-      res.status(400).json({ error });
+      res
+        .status(200)
+        .json({
+          message:
+            "Encountered error saving to secondary database; this does not affect core functionality.",
+          error,
+        });
     }
   } catch (error: any) {
     res.status(400).json({ spotifyResponseBody: error.response.body });
