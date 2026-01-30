@@ -185,7 +185,7 @@ export function Track({
           {track.artist}
         </p>
         <div className="flex items-center justify-between pt-1">
-          <p className="font-serif italic text-sm text-silver/50 line-clamp-1 flex-1">
+          <p className="font-sans italic text-sm text-silver/50 line-clamp-1 flex-1" title={track.album}>
             {track.album}
           </p>
           {track.updatedAt && (
