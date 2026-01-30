@@ -23,37 +23,41 @@ function LoadingIndicator() {
 function DownloadCTA({ onDismiss }: { onDismiss: () => void }) {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-smoke/95 backdrop-blur-sm border-t border-ash/50">
-      <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12 py-4 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-6 flex-wrap">
-          <span className="font-sans text-xs text-silver uppercase tracking-[0.15em] font-light">
-            Shortcut
-          </span>
-          <div className="flex items-center gap-4">
-            <a
-              href="https://routinehub.co/shortcut/7741/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-sans text-xs text-cream hover:text-silver transition-colors font-light"
-            >
-              RoutineHub
-            </a>
-            <a
-              href="https://shareshortcuts.com/shortcuts/2317-imessage2spotify.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-sans text-xs text-cream hover:text-silver transition-colors font-light"
-            >
-              ShareShortcuts
-            </a>
+      <div className="max-w-6xl mx-auto px-4 md:px-8 lg:px-12 py-3">
+        {/* iMessage-style input pill */}
+        <div className="bg-ash/60 rounded-full px-5 py-2.5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
+            <span className="font-sans text-xs text-silver uppercase tracking-[0.15em] font-light">
+              Shortcut
+            </span>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://routinehub.co/shortcut/7741/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-sans text-xs text-cream hover:text-imessage-blue transition-colors font-light"
+              >
+                RoutineHub
+              </a>
+              <span className="text-ash">·</span>
+              <a
+                href="https://shareshortcuts.com/shortcuts/2317-imessage2spotify.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-sans text-xs text-cream hover:text-imessage-blue transition-colors font-light"
+              >
+                ShareShortcuts
+              </a>
+            </div>
           </div>
+          <button
+            onClick={onDismiss}
+            className="font-sans text-xs text-silver hover:text-cream transition-colors font-light"
+            aria-label="Dismiss"
+          >
+            ✕
+          </button>
         </div>
-        <button
-          onClick={onDismiss}
-          className="font-sans text-xs text-silver hover:text-cream transition-colors font-light"
-          aria-label="Dismiss"
-        >
-          Close
-        </button>
       </div>
     </div>
   );
