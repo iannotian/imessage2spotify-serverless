@@ -1,20 +1,65 @@
 import Head from "next/head";
 import React from "react";
-import cx from "classnames";
 import { useAudioPlayer } from "react-use-audio-player";
 import useSWRInfinite from "swr/infinite";
 import { Track } from "~/components/Track";
-import { PageHeading } from "~/components/PageHeading";
-import { DownloadLinkBanner } from "~/components/DownloadLinkBanner";
 import { PrismaTrack } from "~/lib/db";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
-import { LoadingSpinner } from "~/components/LoadingSpinner";
 
 type GetTracksResponse = { data: PrismaTrack[]; nextCursor: string };
 
+
+function LoadingIndicator() {
+  return (
+    <div className="py-12 text-center">
+      <span className="font-sans text-sm text-silver uppercase tracking-[0.15em] font-light">
+        Loading...
+      </span>
+    </div>
+  );
+}
+
+function DownloadCTA({ onDismiss }: { onDismiss: () => void }) {
+  return (
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-smoke/95 backdrop-blur-sm border-t border-ash/50">
+      <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12 py-4 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-6 flex-wrap">
+          <span className="font-sans text-xs text-silver uppercase tracking-[0.15em] font-light">
+            Shortcut
+          </span>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://routinehub.co/shortcut/7741/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-sans text-xs text-cream hover:text-silver transition-colors font-light"
+            >
+              RoutineHub
+            </a>
+            <a
+              href="https://shareshortcuts.com/shortcuts/2317-imessage2spotify.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-sans text-xs text-cream hover:text-silver transition-colors font-light"
+            >
+              ShareShortcuts
+            </a>
+          </div>
+        </div>
+        <button
+          onClick={onDismiss}
+          className="font-sans text-xs text-silver hover:text-cream transition-colors font-light"
+          aria-label="Dismiss"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const Home: React.FC = () => {
-  const [showDownloadLinkBanner, setShowDownloadLinkBanner] =
-    React.useState(true);
+  const [showDownloadBanner, setShowDownloadBanner] = React.useState(true);
   const [currentPlayingTrack, setCurrentPlayingTrack] =
     React.useState<PrismaTrack | null>(null);
 
@@ -30,13 +75,8 @@ const Home: React.FC = () => {
   };
 
   const getKey = (pageIndex: number, previousPageData: GetTracksResponse) => {
-    // reached the end
     if (previousPageData && !previousPageData.data) return null;
-
-    // first page, we don't have `previousPageData`
     if (pageIndex === 0) return `/api/tracks?cursor=null&take=12`;
-
-    // add the cursor to the API endpoint
     return `/api/tracks?cursor=${previousPageData.nextCursor}&take=12`;
   };
 
@@ -74,23 +114,37 @@ const Home: React.FC = () => {
   const tracks = data?.flatMap((page) => page?.data || []) || [];
 
   return (
-    <div className="max-w-4xl w-full">
+    <div className="min-h-screen">
       <Head>
-        <title>iMessage2Spotify</title>
+        <title>iMessage2Spotify — Music Shared With Love</title>
         <meta
           name="description"
-          content="Latest tracks shared by iMessage2Spotify users"
+          content="Discover tracks shared between friends via iMessage. A living feed of music recommendations."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="space-y-8">
-        <PageHeading>Latest Shared Tracks</PageHeading>
-        <ul className="grid grid-cols-1 sm:grid-cols-3 md:sm:grid md:grid-cols-4 gap-x-4 sm:gap-y-12 gap-y-4">
-          {tracks.length > 0 &&
-            tracks.map((track, index) => (
-              <li key={track.spotifyTrackId}>
+      {/* Header */}
+      <header className="px-6 md:px-8 lg:px-12 pt-8 pb-6">
+        <div className="max-w-6xl mx-auto flex items-baseline justify-between gap-4">
+          <h1 className="font-sans text-xs uppercase tracking-[0.2em] text-silver font-medium">
+            iMessage2Spotify
+          </h1>
+          <span className="font-sans text-xs text-silver/70 hidden sm:block">
+            Shared via iMessage
+          </span>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="px-6 md:px-8 lg:px-12 py-12 md:py-16">
+        <div className="max-w-6xl mx-auto">
+          {/* Track Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
+            {tracks.length > 0 &&
+              tracks.map((track, index) => (
                 <Track
+                  key={track.spotifyTrackId}
                   track={track}
                   loading={index <= 6 ? "eager" : "lazy"}
                   onPressPlay={() => handlePressPlay(track)}
@@ -99,28 +153,44 @@ const Home: React.FC = () => {
                     track.spotifyPreviewUrl ===
                       currentPlayingTrack?.spotifyPreviewUrl
                   }
+                  isCurrentTrack={
+                    track.spotifyPreviewUrl ===
+                    currentPlayingTrack?.spotifyPreviewUrl
+                  }
                   isHovered={hoveredTrack?.id === track?.id}
                   setHoveredTrack={setHoveredTrack}
+                  index={index}
                 />
-              </li>
-            ))}
-        </ul>
-        {isValidating && (
-          <div className="flex justify-center">
-            <LoadingSpinner />
+              ))}
           </div>
-        )}
+
+          {/* Loading State */}
+          {isValidating && <LoadingIndicator />}
+
+          {/* Empty State */}
+          {!isValidating && tracks.length === 0 && (
+            <div className="py-24">
+              <p className="font-sans text-sm text-silver uppercase tracking-[0.15em] font-light">
+                No tracks yet
+              </p>
+            </div>
+          )}
+        </div>
       </main>
-      <footer
-        className={cx(
-          "p-4 mb-4 flex items-center space-x-2 bg-white dark:bg-gray-800 fixed bottom-0 rounded-xl shadow-lg",
-          { hidden: !showDownloadLinkBanner }
-        )}
-      >
-        <DownloadLinkBanner
-          onDismiss={() => setShowDownloadLinkBanner(false)}
-        />
+
+      {/* Footer */}
+      <footer className="py-8 px-6 md:px-8 lg:px-12 mb-24">
+        <div className="max-w-6xl mx-auto">
+          <span className="font-sans text-xs text-silver/70 uppercase tracking-[0.15em]">
+            Live
+          </span>
+        </div>
       </footer>
+
+      {/* Download CTA */}
+      {showDownloadBanner && (
+        <DownloadCTA onDismiss={() => setShowDownloadBanner(false)} />
+      )}
     </div>
   );
 };
