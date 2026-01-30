@@ -65,6 +65,42 @@ function DownloadCTA({ onDismiss }: { onDismiss: () => void }) {
   );
 }
 
+// Helper to get month key (e.g., "2025-01" for January 2025)
+function getMonthKey(date: Date | string): string {
+  const d = new Date(date);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
+// Helper to format month header
+function formatMonthHeader(monthKey: string): string {
+  const now = new Date();
+  const currentMonthKey = getMonthKey(now);
+
+  if (monthKey === currentMonthKey) {
+    return "This Month";
+  }
+
+  const [year, month] = monthKey.split("-");
+  const date = new Date(parseInt(year), parseInt(month) - 1);
+  return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}
+
+// Group tracks by month
+function groupTracksByMonth(
+  tracks: PrismaTrack[]
+): Map<string, PrismaTrack[]> {
+  const groups = new Map<string, PrismaTrack[]>();
+
+  for (const track of tracks) {
+    const key = getMonthKey(track.updatedAt);
+    const existing = groups.get(key) || [];
+    existing.push(track);
+    groups.set(key, existing);
+  }
+
+  return groups;
+}
+
 const Home: React.FC = () => {
   const [showDownloadBanner, setShowDownloadBanner] = React.useState(true);
   const [currentPlayingTrack, setCurrentPlayingTrack] =
@@ -135,6 +171,8 @@ const Home: React.FC = () => {
   }
 
   const tracks = data?.flatMap((page) => page?.data || []) || [];
+  const tracksByMonth = groupTracksByMonth(tracks);
+  const monthKeys = Array.from(tracksByMonth.keys());
 
   return (
     <div className="min-h-screen">
@@ -174,36 +212,59 @@ const Home: React.FC = () => {
       {/* Main Content */}
       <main className="px-6 md:px-8 lg:px-12 py-12 md:py-16">
         <div className="max-w-6xl mx-auto">
-          {/* Track Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
-            {tracks.length > 0 &&
-              tracks.map((track, index) => (
-                <Track
-                  key={track.spotifyTrackId}
-                  track={track}
-                  loading={index <= 6 ? "eager" : "lazy"}
-                  onPressPlay={() => handlePressPlay(track)}
-                  isPlaying={
-                    playing &&
-                    track.spotifyPreviewUrl ===
-                      currentPlayingTrack?.spotifyPreviewUrl
-                  }
-                  isCurrentTrack={
-                    track.spotifyPreviewUrl ===
-                    currentPlayingTrack?.spotifyPreviewUrl
-                  }
-                  isHovered={hoveredTrack?.id === track?.id}
-                  setHoveredTrack={setHoveredTrack}
-                  index={index}
-                  waveformData={
-                    track.spotifyPreviewUrl ===
-                    currentPlayingTrack?.spotifyPreviewUrl
-                      ? waveformData
-                      : undefined
-                  }
-                />
-              ))}
-          </div>
+          {/* Track Groups by Month */}
+          {monthKeys.map((monthKey, monthIndex) => {
+            const monthTracks = tracksByMonth.get(monthKey) || [];
+            // Calculate global index offset for lazy loading
+            const globalIndexOffset = monthKeys
+              .slice(0, monthIndex)
+              .reduce(
+                (sum, key) => sum + (tracksByMonth.get(key)?.length || 0),
+                0
+              );
+
+            return (
+              <section key={monthKey} className="mb-16 last:mb-0">
+                {/* Month Header */}
+                <h2 className="font-sans text-4xl text-cream uppercase tracking-tighter font-black mb-8">
+                  {formatMonthHeader(monthKey)}
+                </h2>
+
+                {/* Track Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
+                  {monthTracks.map((track, index) => {
+                    const globalIndex = globalIndexOffset + index;
+                    return (
+                      <Track
+                        key={track.spotifyTrackId}
+                        track={track}
+                        loading={globalIndex <= 6 ? "eager" : "lazy"}
+                        onPressPlay={() => handlePressPlay(track)}
+                        isPlaying={
+                          playing &&
+                          track.spotifyPreviewUrl ===
+                            currentPlayingTrack?.spotifyPreviewUrl
+                        }
+                        isCurrentTrack={
+                          track.spotifyPreviewUrl ===
+                          currentPlayingTrack?.spotifyPreviewUrl
+                        }
+                        isHovered={hoveredTrack?.id === track?.id}
+                        setHoveredTrack={setHoveredTrack}
+                        index={globalIndex}
+                        waveformData={
+                          track.spotifyPreviewUrl ===
+                          currentPlayingTrack?.spotifyPreviewUrl
+                            ? waveformData
+                            : undefined
+                        }
+                      />
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })}
 
           {/* Loading State */}
           {isValidating && <LoadingIndicator />}
