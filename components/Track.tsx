@@ -74,8 +74,7 @@ export function Track({
         >
           <div
             className={cx(
-              "w-full h-full rounded-full",
-              "bg-[conic-gradient(from_0deg,#1a1a1a_0deg,#2a2a2a_30deg,#1a1a1a_60deg,#2a2a2a_90deg,#1a1a1a_120deg,#2a2a2a_150deg,#1a1a1a_180deg,#2a2a2a_210deg,#1a1a1a_240deg,#2a2a2a_270deg,#1a1a1a_300deg,#2a2a2a_330deg,#1a1a1a_360deg)]",
+              "w-full h-full rounded-full vinyl-record",
               "shadow-2xl",
               isCurrentTrack && "animate-spin-slow"
             )}

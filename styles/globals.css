@@ -5,6 +5,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
 
 :root {
+  /* Base palette */
+  --color-electric-pink: #007AFF;
+  --color-neon-blue: #00d4ff;
+  --color-acid-green: #a8ff00;
+  --color-sunset-orange: #ff6b35;
+  --color-imessage-blue: #007AFF;
+  --color-sms-green: #34C759;
+
+  /* Semantic colors - Dark mode (default) */
   --color-void: #0a0a0a;
   --color-obsidian: #121212;
   --color-smoke: #1a1a1a;
@@ -12,10 +21,6 @@
   --color-silver: #888888;
   --color-bone: #e8e4df;
   --color-cream: #f5f2ed;
-  --color-electric-pink: #007AFF;
-  --color-neon-blue: #00d4ff;
-  --color-acid-green: #a8ff00;
-  --color-sunset-orange: #ff6b35;
 
   --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -23,6 +28,27 @@
   --font-mono: 'SF Mono', Monaco, monospace;
 
   --noise-opacity: 0.03;
+  --glow-opacity: 1;
+  --vinyl-groove-dark: #1a1a1a;
+  --vinyl-groove-light: #2a2a2a;
+}
+
+/* Light mode - iOS iMessage style */
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-void: #FFFFFF;
+    --color-obsidian: #F2F2F7;
+    --color-smoke: #E5E5EA;
+    --color-ash: #D1D1D6;
+    --color-silver: #8E8E93;
+    --color-bone: #1C1C1E;
+    --color-cream: #000000;
+
+    --noise-opacity: 0;
+    --glow-opacity: 0.3;
+    --vinyl-groove-dark: #E5E5EA;
+    --vinyl-groove-light: #D1D1D6;
+  }
 }
 
 * {
@@ -73,7 +99,7 @@ body::before {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-electric-pink);
+  background: var(--color-imessage-blue);
 }
 
 /* Animations */
@@ -174,60 +200,36 @@ body::before {
 
 /* Glow effects */
 .glow-pink {
-  box-shadow: 0 0 20px rgba(0, 122, 255, 0.4),
-              0 0 40px rgba(0, 122, 255, 0.2),
-              0 0 60px rgba(0, 122, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 122, 255, calc(0.4 * var(--glow-opacity))),
+              0 0 40px rgba(0, 122, 255, calc(0.2 * var(--glow-opacity))),
+              0 0 60px rgba(0, 122, 255, calc(0.1 * var(--glow-opacity)));
 }
 
 .glow-blue {
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.4),
-              0 0 40px rgba(0, 212, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 212, 255, calc(0.4 * var(--glow-opacity))),
+              0 0 40px rgba(0, 212, 255, calc(0.2 * var(--glow-opacity)));
 }
 
-/* Vinyl record effect */
+/* Vinyl record effect - gradient only, Track component handles center elements */
 .vinyl-record {
   position: relative;
   border-radius: 50%;
   background: conic-gradient(
     from 0deg,
-    #1a1a1a 0deg,
-    #2a2a2a 30deg,
-    #1a1a1a 60deg,
-    #2a2a2a 90deg,
-    #1a1a1a 120deg,
-    #2a2a2a 150deg,
-    #1a1a1a 180deg,
-    #2a2a2a 210deg,
-    #1a1a1a 240deg,
-    #2a2a2a 270deg,
-    #1a1a1a 300deg,
-    #2a2a2a 330deg,
-    #1a1a1a 360deg
+    var(--vinyl-groove-dark) 0deg,
+    var(--vinyl-groove-light) 30deg,
+    var(--vinyl-groove-dark) 60deg,
+    var(--vinyl-groove-light) 90deg,
+    var(--vinyl-groove-dark) 120deg,
+    var(--vinyl-groove-light) 150deg,
+    var(--vinyl-groove-dark) 180deg,
+    var(--vinyl-groove-light) 210deg,
+    var(--vinyl-groove-dark) 240deg,
+    var(--vinyl-groove-light) 270deg,
+    var(--vinyl-groove-dark) 300deg,
+    var(--vinyl-groove-light) 330deg,
+    var(--vinyl-groove-dark) 360deg
   );
-}
-
-.vinyl-record::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 30%;
-  height: 30%;
-  border-radius: 50%;
-  background: var(--color-electric-pink);
-}
-
-.vinyl-record::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 8%;
-  height: 8%;
-  border-radius: 50%;
-  background: var(--color-void);
 }
 
 /* Track card hover effects */

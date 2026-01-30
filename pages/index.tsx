@@ -21,11 +21,11 @@ function LoadingIndicator() {
 
 function DownloadCTA({ onDismiss }: { onDismiss: () => void }) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-smoke/95 backdrop-blur-sm border-t border-ash/50">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-obsidian border-t border-ash">
       <div className="px-6 md:px-8 lg:px-12 py-3">
         <div className="max-w-6xl mx-auto">
           {/* iMessage-style input pill */}
-          <div className="bg-silver/15 rounded-full px-5 py-2.5 flex items-center justify-between gap-4">
+          <div className="bg-smoke rounded-full px-5 py-2.5 flex items-center justify-between gap-4">
             <div className="flex items-center gap-4 flex-wrap">
               <span className="font-sans text-xs text-silver uppercase tracking-[0.15em] font-light">
                 Shortcut
@@ -190,7 +190,7 @@ const Home: React.FC = () => {
               <span className="bg-imessage-blue text-white font-sans text-xs uppercase tracking-[0.15em] font-medium px-3 py-1.5 rounded-2xl rounded-bl-sm">
                 iMessage
               </span>
-              <span className="font-sans text-xs text-white font-bold">2</span>
+              <span className="font-sans text-xs text-cream font-bold">2</span>
             </div>
             <div className="flex justify-end">
               <span className="bg-sms-green text-white font-sans text-xs uppercase tracking-[0.15em] font-medium px-3 py-1.5 rounded-2xl rounded-br-sm">
