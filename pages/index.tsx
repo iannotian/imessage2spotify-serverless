@@ -9,7 +9,6 @@ import { useAudioAnalyser } from "~/lib/useAudioAnalyser";
 
 type GetTracksResponse = { data: PrismaTrack[]; nextCursor: string };
 
-
 function LoadingIndicator() {
   return (
     <div className="py-12 text-center">
@@ -27,38 +26,38 @@ function DownloadCTA({ onDismiss }: { onDismiss: () => void }) {
         <div className="max-w-6xl mx-auto">
           {/* iMessage-style input pill */}
           <div className="bg-silver/15 rounded-full px-5 py-2.5 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4 flex-wrap">
-            <span className="font-sans text-xs text-silver uppercase tracking-[0.15em] font-light">
-              Shortcut
-            </span>
-            <div className="flex items-center gap-3">
-              <a
-                href="https://routinehub.co/shortcut/7741/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-sans text-xs text-cream hover:text-imessage-blue transition-colors font-light"
-              >
-                RoutineHub
-              </a>
-              <span className="text-ash">·</span>
-              <a
-                href="https://shareshortcuts.com/shortcuts/2317-imessage2spotify.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-sans text-xs text-cream hover:text-imessage-blue transition-colors font-light"
-              >
-                ShareShortcuts
-              </a>
+            <div className="flex items-center gap-4 flex-wrap">
+              <span className="font-sans text-xs text-silver uppercase tracking-[0.15em] font-light">
+                Shortcut
+              </span>
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://routinehub.co/shortcut/7741/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-sans text-xs text-cream hover:text-imessage-blue transition-colors font-light"
+                >
+                  RoutineHub
+                </a>
+                <span className="text-ash">·</span>
+                <a
+                  href="https://shareshortcuts.com/shortcuts/2317-imessage2spotify.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-sans text-xs text-cream hover:text-imessage-blue transition-colors font-light"
+                >
+                  ShareShortcuts
+                </a>
+              </div>
             </div>
+            <button
+              onClick={onDismiss}
+              className="font-sans text-xs text-silver hover:text-cream transition-colors font-light"
+              aria-label="Dismiss"
+            >
+              ✕
+            </button>
           </div>
-          <button
-            onClick={onDismiss}
-            className="font-sans text-xs text-silver hover:text-cream transition-colors font-light"
-            aria-label="Dismiss"
-          >
-            ✕
-          </button>
-        </div>
         </div>
       </div>
     </div>
@@ -86,9 +85,7 @@ function formatMonthHeader(monthKey: string): string {
 }
 
 // Group tracks by month
-function groupTracksByMonth(
-  tracks: PrismaTrack[]
-): Map<string, PrismaTrack[]> {
+function groupTracksByMonth(tracks: PrismaTrack[]): Map<string, PrismaTrack[]> {
   const groups = new Map<string, PrismaTrack[]>();
 
   for (const track of tracks) {
@@ -145,11 +142,11 @@ const Home: React.FC = () => {
     {
       debounce: 1000,
       triggerOnNoScroll: false,
-    }
+    },
   );
 
   const [hoveredTrack, setHoveredTrack] = React.useState<PrismaTrack | null>(
-    null
+    null,
   );
 
   function handlePressPlay(track: PrismaTrack) {
@@ -193,9 +190,7 @@ const Home: React.FC = () => {
               <span className="bg-imessage-blue text-white font-sans text-xs uppercase tracking-[0.15em] font-medium px-3 py-1.5 rounded-2xl rounded-bl-sm">
                 iMessage
               </span>
-              <span className="font-sans text-xs text-white font-bold">
-                2
-              </span>
+              <span className="font-sans text-xs text-white font-bold">2</span>
             </div>
             <div className="flex justify-end">
               <span className="bg-sms-green text-white font-sans text-xs uppercase tracking-[0.15em] font-medium px-3 py-1.5 rounded-2xl rounded-br-sm">
@@ -204,7 +199,7 @@ const Home: React.FC = () => {
             </div>
           </h1>
           <span className="font-sans text-xs text-silver/70 hidden sm:block">
-            Shared via iMessage
+            Shared Anonymously via iMessage
           </span>
         </div>
       </header>
@@ -220,7 +215,7 @@ const Home: React.FC = () => {
               .slice(0, monthIndex)
               .reduce(
                 (sum, key) => sum + (tracksByMonth.get(key)?.length || 0),
-                0
+                0,
               );
 
             return (
