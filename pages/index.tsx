@@ -26,7 +26,7 @@ function DownloadCTA({ onDismiss }: { onDismiss: () => void }) {
       <div className="px-6 md:px-8 lg:px-12 py-3">
         <div className="max-w-6xl mx-auto">
           {/* iMessage-style input pill */}
-          <div className="bg-ash/60 rounded-full px-5 py-2.5 flex items-center justify-between gap-4">
+          <div className="bg-silver/15 rounded-full px-5 py-2.5 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4 flex-wrap">
             <span className="font-sans text-xs text-silver uppercase tracking-[0.15em] font-light">
               Shortcut
