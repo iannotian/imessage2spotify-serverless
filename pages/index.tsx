@@ -5,6 +5,7 @@ import useSWRInfinite from "swr/infinite";
 import { Track } from "~/components/Track";
 import { PrismaTrack } from "~/lib/db";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
+import { useAudioAnalyser } from "~/lib/useAudioAnalyser";
 
 type GetTracksResponse = { data: PrismaTrack[]; nextCursor: string };
 
@@ -63,11 +64,23 @@ const Home: React.FC = () => {
   const [currentPlayingTrack, setCurrentPlayingTrack] =
     React.useState<PrismaTrack | null>(null);
 
-  const { playing, play, pause } = useAudioPlayer({
-    src: currentPlayingTrack?.spotifyPreviewUrl,
+  const { playing, play, pause, load, ready } = useAudioPlayer({
+    src: "",
     format: "mp3",
-    autoplay: "false",
+    autoplay: false,
   });
+
+  // Load and play when track changes
+  const prevTrackRef = React.useRef<string | null>(null);
+  React.useEffect(() => {
+    const url = currentPlayingTrack?.spotifyPreviewUrl;
+    if (url && url !== prevTrackRef.current) {
+      prevTrackRef.current = url;
+      load({ src: url, format: "mp3", autoplay: true });
+    }
+  }, [currentPlayingTrack?.spotifyPreviewUrl, load]);
+
+  const waveformData = useAudioAnalyser(playing);
 
   const fetcher = async (url: string) => {
     const response = await fetch(url);
@@ -98,17 +111,21 @@ const Home: React.FC = () => {
   );
 
   function handlePressPlay(track: PrismaTrack) {
-    setCurrentPlayingTrack(track);
+    const isSameTrack =
+      track.spotifyPreviewUrl === currentPlayingTrack?.spotifyPreviewUrl;
 
-    if (
-      playing &&
-      track.spotifyPreviewUrl === currentPlayingTrack?.spotifyPreviewUrl
-    ) {
-      pause();
+    if (isSameTrack) {
+      // Toggle play/pause for same track
+      if (playing) {
+        pause();
+      } else {
+        play();
+      }
       return;
     }
 
-    play();
+    // New track - load will trigger via useEffect with autoplay
+    setCurrentPlayingTrack(track);
   }
 
   const tracks = data?.flatMap((page) => page?.data || []) || [];
@@ -160,6 +177,12 @@ const Home: React.FC = () => {
                   isHovered={hoveredTrack?.id === track?.id}
                   setHoveredTrack={setHoveredTrack}
                   index={index}
+                  waveformData={
+                    track.spotifyPreviewUrl ===
+                    currentPlayingTrack?.spotifyPreviewUrl
+                      ? waveformData
+                      : undefined
+                  }
                 />
               ))}
           </div>
