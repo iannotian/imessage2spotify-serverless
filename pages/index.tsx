@@ -190,8 +190,7 @@ const Home: React.FC = () => {
               <span className="bg-imessage-blue text-white font-sans text-xs uppercase tracking-[0.15em] font-medium px-3 py-1.5 rounded-2xl rounded-bl-sm">
                 iMessage
               </span>
-              <span className="font-sans text-xs text-cream font-bold">2</span>
-            </div>
+                          </div>
             <div className="flex justify-end">
               <span className="bg-sms-green text-white font-sans text-xs uppercase tracking-[0.15em] font-medium px-3 py-1.5 rounded-2xl rounded-br-sm">
                 Spotify
