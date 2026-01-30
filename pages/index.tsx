@@ -144,8 +144,20 @@ const Home: React.FC = () => {
       {/* Header */}
       <header className="px-6 md:px-8 lg:px-12 pt-8 pb-6">
         <div className="max-w-6xl mx-auto flex items-baseline justify-between gap-4">
-          <h1 className="font-sans text-xs uppercase tracking-[0.2em] text-silver font-medium">
-            iMessage2Spotify
+          <h1 className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <span className="bg-imessage-blue text-white font-sans text-xs uppercase tracking-[0.15em] font-medium px-3 py-1.5 rounded-2xl rounded-bl-sm">
+                iMessage
+              </span>
+              <span className="font-sans text-xs text-white font-bold">
+                2
+              </span>
+            </div>
+            <div className="flex justify-end">
+              <span className="bg-sms-green text-white font-sans text-xs uppercase tracking-[0.15em] font-medium px-3 py-1.5 rounded-2xl rounded-br-sm">
+                Spotify
+              </span>
+            </div>
           </h1>
           <span className="font-sans text-xs text-silver/70 hidden sm:block">
             Shared via iMessage
