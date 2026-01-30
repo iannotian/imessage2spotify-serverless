@@ -119,9 +119,9 @@ export function Track({
               "flex items-center justify-center",
               "font-sans text-[10px] uppercase tracking-[0.05em] font-medium",
               "transition-all duration-300 ease-out",
-              "focus:outline-none focus:ring-2 focus:ring-electric-pink focus:ring-offset-2 focus:ring-offset-void",
+              "focus:outline-none focus:ring-2 focus:ring-imessage-blue focus:ring-offset-2 focus:ring-offset-void",
               isPlaying
-                ? "bg-electric-pink text-void glow-pink scale-100 opacity-100"
+                ? "bg-imessage-blue text-white glow-pink scale-100 opacity-100"
                 : isCurrentTrack
                   ? "bg-cream text-ash scale-100 opacity-100"
                   : isHovered
@@ -165,12 +165,12 @@ export function Track({
               {waveformData.map((value, i) => (
                 <span
                   key={i}
-                  className="w-[2px] bg-electric-pink rounded-full transition-all duration-75"
+                  className="w-[2px] bg-imessage-blue rounded-full transition-all duration-75"
                   style={{ height: `${Math.max(15, value * 100)}%` }}
                 />
               ))}
             </div>
-            <span className="text-xs font-sans uppercase tracking-[0.15em] text-electric-pink font-medium">
+            <span className="text-xs font-sans uppercase tracking-[0.15em] text-imessage-blue font-medium">
               Playing
             </span>
           </div>
@@ -179,7 +179,7 @@ export function Track({
 
       {/* Track Info */}
       <div className="mt-4 space-y-1">
-        <h3 className="font-sans font-medium text-base leading-tight text-cream group-hover:text-electric-pink transition-colors duration-300 line-clamp-1 tracking-tight">
+        <h3 className="font-sans font-medium text-base leading-tight text-cream group-hover:text-imessage-blue transition-colors duration-300 line-clamp-1 tracking-tight">
           {track.title}
         </h3>
         <p className="font-sans text-sm text-silver font-light line-clamp-1">
@@ -206,7 +206,7 @@ export function Track({
           "absolute top-0 right-0 w-8 h-8 transition-all duration-300",
           "border-t-2 border-r-2",
           isHovered || isCurrentTrack
-            ? "border-electric-pink"
+            ? "border-imessage-blue"
             : "border-transparent"
         )}
       />

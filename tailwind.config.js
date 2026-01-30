@@ -14,7 +14,7 @@ module.exports = {
         silver: "#888888",
         bone: "#e8e4df",
         cream: "#f5f2ed",
-        "electric-pink": "#ff2d7b",
+        "electric-pink": "#007AFF",
         "neon-blue": "#00d4ff",
         "acid-green": "#a8ff00",
         "sunset-orange": "#ff6b35",
