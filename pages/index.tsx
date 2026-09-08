@@ -182,6 +182,19 @@ const Home: React.FC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <aside
+        aria-label="Project status"
+        className="border-b border-amber-400/40 bg-amber-300 px-6 py-4 text-amber-950 md:px-8 lg:px-12"
+      >
+        <div className="mx-auto max-w-6xl">
+          <p className="font-sans text-sm leading-relaxed">
+            <strong className="font-bold">iMessage2Spotify is defunct.</strong>{" "}
+            This project is no longer operational due to Spotify&apos;s API
+            restrictions and is no longer maintained.
+          </p>
+        </div>
+      </aside>
+
       {/* Header */}
       <header className="px-6 md:px-8 lg:px-12 pt-8 pb-6">
         <div className="max-w-6xl mx-auto flex items-baseline justify-between gap-4">
