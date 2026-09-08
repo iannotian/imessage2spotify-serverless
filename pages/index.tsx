@@ -190,7 +190,17 @@ const Home: React.FC = () => {
           <p className="font-sans text-sm leading-relaxed">
             <strong className="font-bold">iMessage2Spotify is defunct.</strong>{" "}
             This project is no longer operational due to Spotify&apos;s API
-            restrictions and is no longer maintained.
+            restrictions and is no longer maintained. You can continue using it
+            by self-hosting the server from the{" "}
+            <a
+              href="https://github.com/iannotian/imessage2spotify-serverless"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold underline decoration-amber-800/50 underline-offset-2 hover:decoration-amber-950"
+            >
+              source code on GitHub
+            </a>{" "}
+            and pointing the Shortcut at your server&apos;s URL.
           </p>
         </div>
       </aside>
